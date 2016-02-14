@@ -2,3 +2,4 @@
 /savedGames/*.sav
 /config/*.cfg
 .classpath
+/bin/
