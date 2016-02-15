@@ -22,6 +22,8 @@ public class Player extends Entity {
 	Inventory inventory;
 	boolean dead = false;
 	boolean isWalking = false;
+	
+	int xCoord, yCoord;
 
 	/**
 	 * Constructor
@@ -90,6 +92,9 @@ public class Player extends Entity {
 				break;
 			}
 		}
+		
+		xCoord = (int) (x / map.tileSize());
+		yCoord = (int) (y / map.tileSize());
 	}
 
 	@Override
