@@ -71,7 +71,7 @@ public class Driver extends StateBasedGame{
 		
 		int tileSize = 50;
 		
-		addState(new Level0(gc, tileSize, 30, 20));
+		addState(new Level0(gc, tileSize, 10, 10));
 
 		enterState(MAIN_MENU); 
 	}

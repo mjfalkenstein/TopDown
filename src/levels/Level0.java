@@ -45,11 +45,13 @@ public class Level0 extends Level{
 			}
 		}
 		
-		background = new Rectangle(0, 0, levelWidth * tileSize, levelHeight * tileSize);
+		background = new Rectangle(-levelWidth * tileSize / 2, -levelHeight * tileSize / 2, levelWidth * tileSize, levelHeight * tileSize);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		g.translate(-(player.getX() - gc.getWidth()/2), -(player.getY() - gc.getHeight()/2));
+		
 		g.setColor(Color.black);
 		g.fill(background);
 		
@@ -60,6 +62,8 @@ public class Level0 extends Level{
 		}
 		
 		drawLevelEssentials(g);
+		
+		g.translate((player.getX() - gc.getWidth()/2), (player.getY() - gc.getHeight()/2));
 	}
 
 	@Override

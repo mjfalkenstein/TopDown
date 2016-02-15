@@ -338,7 +338,7 @@ public abstract class Level extends BasicGameState{
 	 * @param g - the Graphics context
 	 */
 	protected void drawLevelEssentials(Graphics g){
-		camera.translate(gc, g, player);
+		camera.update(gc, g, player);
 
 		for(Entity e : world){
 			e.draw(g);

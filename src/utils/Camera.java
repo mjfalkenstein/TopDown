@@ -34,30 +34,9 @@ public class Camera {
 	 * @param g - the Graphics context
 	 * @param e - the Entity to follow
 	 */
-	public void translate(GameContainer gc, Graphics g, Entity e) {
-
-		//Checking that the player is within bounds of the camera horizontally
-		if(e.getX() - gc.getWidth() * 1/2 < 0){
-			dX = 0;
-		}else if(e.getX() - gc.getWidth() * 1/2 > levelWidth){
-			dX = -levelWidth + gc.getWidth();
-		}else{
-			dX = (int)-e.getX() + gc.getWidth() * 1/2;
-		}
-
-		//checking that the player is within bounds of the camera vertically
-		if(e.getY() - gc.getHeight() * 1/2 < 0){
-			dY = 0;
-		}else if(e.getY() + gc.getHeight() * 1/2 > levelHeight){
-			dY = -levelHeight + gc.getHeight();
-		}else{
-			dY = (int)-e.getY() + gc.getHeight() * 1/2;
-		}
-		
-		//Moving the camera appropriately
-		g.translate(-dX, -dY);
-		view.setX(-dX);
-		view.setY(-dY);
+	public void update(GameContainer gc, Graphics g, Entity e) {
+		view.setX((e.getX() - gc.getWidth()/2));
+		view.setY((e.getY() - gc.getHeight()/2));
 	}
 	
 	public int getX(){
