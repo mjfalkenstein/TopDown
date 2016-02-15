@@ -21,6 +21,7 @@ public class Player extends Entity {
 
 	Inventory inventory;
 	boolean dead = false;
+	boolean isWalking = false;
 
 	/**
 	 * Constructor
@@ -36,6 +37,35 @@ public class Player extends Entity {
 	@Override
 	public void update(GameContainer gc, int delta, TileMap map) {
 		handleInputs(gc, map);
+
+		if(isWalking){
+			switch(direction){
+			case EAST:
+				x -= 1;
+				if(x % map.tileSize() == 0){
+					isWalking = false;
+				}
+				break;
+			case NORTH:
+				y -= 1;
+				if(y % map.tileSize() == 0){
+					isWalking = false;
+				}
+				break;
+			case SOUTH:
+				y += 1;
+				if(y % map.tileSize() == 0){
+					isWalking = false;
+				}
+				break;
+			case WEST:
+				x += 1;
+				if(x % map.tileSize() == 0){
+					isWalking = false;
+				}
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -49,7 +79,7 @@ public class Player extends Entity {
 		g.setColor(Color.red);
 		g.fill(new Rectangle(x, y, width, height));
 	}
-	
+
 	@Override
 	public void reset(){
 		move(startingX, startingY);
@@ -57,7 +87,7 @@ public class Player extends Entity {
 			inventory.reset();
 		}
 	}
-	
+
 	/**
 	 * Called from update(), used to handle all inputs
 	 * 
@@ -65,36 +95,44 @@ public class Player extends Entity {
 	 */
 	public void handleInputs(GameContainer gc, TileMap map){
 		Input input = gc.getInput();
-		
+
 		if(input.isKeyDown(Input.KEY_W)){
-			y -= 1;
-			direction = Direction.NORTH;
+			if(!isWalking){
+				direction = Direction.NORTH;
+				isWalking = true;
+			}
 		}
 		else if(input.isKeyDown(Input.KEY_A)){
-			x -= 1;
-			direction = Direction.EAST;
+			if(!isWalking){
+				direction = Direction.EAST;
+				isWalking = true;
+			}
 		}
 		else if(input.isKeyDown(Input.KEY_S)){
-			y += 1;
-			direction = Direction.SOUTH;
+			if(!isWalking){
+				direction = Direction.SOUTH;
+				isWalking = true;
+			}
 		}
 		else if(input.isKeyDown(Input.KEY_D)){
-			x += 1;
-			direction = Direction.WEST;
+			if(!isWalking){
+				direction = Direction.WEST;
+				isWalking = true;
+			}
 		}
 	}
-	
+
 	/**
 	 * Used to signify that the player has been killed
 	 */
 	public void kill(){
 		dead = true;
 	}
-	
+
 	public void revive(){
 		dead = false;
 	}
-	
+
 	public boolean isDead(){
 		return dead;
 	}
@@ -105,15 +143,15 @@ public class Player extends Entity {
 		}
 		inventory.addItem(item);
 	}
-	
+
 	public void removeItem(Item item){
 		inventory.removeItem(item);
 	}
-	
+
 	public Inventory getInventory(){
 		return inventory;
 	}
-	
+
 	public boolean has(Item item){
 		return inventory.contains(item);
 	}

@@ -1,10 +1,8 @@
 package entities;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Shape;
 
 import utils.Direction;
 import utils.TileMap;
@@ -26,7 +24,6 @@ public abstract class Entity {
 	 * @param velocity - the initial velocity
 	 */
 	public Entity(int x, int y, float width, float height) {
-		super();
 		this.x = x * width;
 		this.y = y * width;
 		startingX = x * width;

@@ -42,4 +42,8 @@ public class TileMap {
 			}
 		}
 	}
+	
+	public int tileSize(){
+		return tiles.get(0).get(0).width;
+	}
 }
