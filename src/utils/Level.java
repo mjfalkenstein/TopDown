@@ -112,7 +112,7 @@ public abstract class Level extends BasicGameState{
 
 		optionsMenu = new InGameOptionsMenu(gc);
 
-		map = new TileMap(levelWidth, levelHeight);
+		map = new TileMap(levelWidth, levelHeight, tileSize);
 	}
 
 	@Override

@@ -7,11 +7,12 @@ import org.newdawn.slick.Graphics;
 public class TileMap {
 	
 	ArrayList<ArrayList<Tile>> tiles = new ArrayList<ArrayList<Tile>>();
-	private int width, height;
+	private int width, height, tileSize;
 	
-	public TileMap(int width, int height){
+	public TileMap(int width, int height, int tileSize){
 		this.width = width;
 		this.height = height;
+		this.tileSize = tileSize;
 		
 		for(int i = 0; i < width; i++){
 			tiles.add(new ArrayList<Tile>());
@@ -39,6 +40,15 @@ public class TileMap {
 			ArrayList<Tile> list = tiles.get(i);
 			for(int j = 0; j < list.size(); j++){
 				list.get(j).draw(g, i, j);
+			}
+		}
+	}
+	
+	public void move(int x, int y){
+		for(int i = 0; i < width; i++){
+			ArrayList<Tile> list = tiles.get(i);
+			for(int j = 0; j < list.size(); j++){
+				list.get(j).move(i * tileSize, j * tileSize);
 			}
 		}
 	}

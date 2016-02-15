@@ -9,7 +9,7 @@ public class Tile {
 	
 	SpriteSheet sprite;
 	int width, height;
-	int currentX, currentY;
+	int currentX, currentY, x, y;
 	TileEnum type;
 	boolean pathable;
 	
@@ -165,13 +165,17 @@ public class Tile {
 		pathable = true;
 	}
 	
-	public void draw(Graphics g, int x, int y){
+	public void draw(Graphics g, int i, int j){
 		Image image = sprite.getSprite(currentX, currentY);
-		image.draw(x * width, y * height);
+		image.draw(x + i * width, y + j * height);
 	}
 	
 	public void setSprite(SpriteSheet newSprite){
 		sprite = newSprite;
 	}
-
+	
+	public void move(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
 }

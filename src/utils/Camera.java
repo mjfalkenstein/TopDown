@@ -55,7 +55,7 @@ public class Camera {
 		}
 		
 		//Moving the camera appropriately
-		g.translate(dX, dY);
+		g.translate(-dX, -dY);
 		view.setX(-dX);
 		view.setY(-dY);
 	}
