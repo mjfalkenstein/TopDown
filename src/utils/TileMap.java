@@ -46,4 +46,20 @@ public class TileMap {
 	public int tileSize(){
 		return tiles.get(0).get(0).width;
 	}
+	
+	public int minX(){
+		return 0;
+	}
+	
+	public int minY(){
+		return 0;
+	}
+	
+	public int maxX(){
+		return width * tileSize();
+	}
+	
+	public int maxY(){
+		return height * tileSize();
+	}
 }

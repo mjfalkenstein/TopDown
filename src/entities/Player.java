@@ -41,27 +41,51 @@ public class Player extends Entity {
 		if(isWalking){
 			switch(direction){
 			case EAST:
-				x -= 1;
-				if(x % map.tileSize() == 0){
+				if(x >= map.maxX() - map.tileSize()){
+					x = map.maxX() - map.tileSize();
 					isWalking = false;
+				}
+				else{
+					x += 1;
+					if(x % map.tileSize() == 0){
+						isWalking = false;
+					}
 				}
 				break;
 			case NORTH:
-				y -= 1;
-				if(y % map.tileSize() == 0){
+				if(y <= 0){
+					y = 0;
 					isWalking = false;
+				}
+				else{
+					y -= 1;
+					if(y % map.tileSize() == 0){
+						isWalking = false;
+					}
 				}
 				break;
 			case SOUTH:
-				y += 1;
-				if(y % map.tileSize() == 0){
+				if(y >= map.maxY() - map.tileSize()){
+					y = map.maxY() - map.tileSize();
 					isWalking = false;
+				}
+				else{
+					y += 1;
+					if(y % map.tileSize() == 0){
+						isWalking = false;
+					}
 				}
 				break;
 			case WEST:
-				x += 1;
-				if(x % map.tileSize() == 0){
+				if(x <= 0){
+					x = 0;
 					isWalking = false;
+				}
+				else{
+					x -= 1;
+					if(x % map.tileSize() == 0){
+						isWalking = false;
+					}
 				}
 				break;
 			}
@@ -104,7 +128,7 @@ public class Player extends Entity {
 		}
 		else if(input.isKeyDown(Input.KEY_A)){
 			if(!isWalking){
-				direction = Direction.EAST;
+				direction = Direction.WEST;
 				isWalking = true;
 			}
 		}
@@ -116,7 +140,7 @@ public class Player extends Entity {
 		}
 		else if(input.isKeyDown(Input.KEY_D)){
 			if(!isWalking){
-				direction = Direction.WEST;
+				direction = Direction.EAST;
 				isWalking = true;
 			}
 		}
