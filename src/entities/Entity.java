@@ -2,6 +2,7 @@ package entities;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import utils.Direction;
@@ -13,7 +14,7 @@ import utils.TileMap;
 public abstract class Entity {
 	
 	protected float x, y, width, height, startingX, startingY, startingMaxX, startingMaxY;
-	protected SpriteSheet sprites;
+	protected SpriteSheet sprite;
 	Direction direction;
 	boolean visible = true;
 	
@@ -110,4 +111,15 @@ public abstract class Entity {
 		return startingY;
 	}
 	
+	public SpriteSheet getSprite(){
+		return sprite;
+	}
+	
+	public void setSprite(String path, int spriteWidth, int spriteHeight){
+		try {
+			sprite = new SpriteSheet(path , spriteWidth, spriteHeight);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 }

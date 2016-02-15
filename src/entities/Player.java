@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -22,6 +23,7 @@ public class Player extends Entity {
 	Inventory inventory;
 	boolean dead = false;
 	boolean isWalking = false;
+	Image image;
 	
 	int xCoord, yCoord;
 
@@ -104,12 +106,6 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		g.setColor(Color.red);
-		g.fill(new Rectangle(x, y, width, height));
-	}
-
-	@Override
 	public void reset(){
 		move(startingX, startingY);
 		if(inventory != null){
@@ -149,6 +145,24 @@ public class Player extends Entity {
 				isWalking = true;
 			}
 		}
+	}
+	
+	public void draw(Graphics g){
+		switch(direction){
+		case NORTH:
+			image = sprite.getSprite(0, 0);
+			break;
+		case EAST:
+			image = sprite.getSprite(1, 0);
+			break;
+		case SOUTH:
+			image = sprite.getSprite(2, 0);
+			break;
+		case WEST:
+			image = sprite.getSprite(3, 0);
+			break;
+		}
+		image.draw(x, y);
 	}
 
 	/**
