@@ -15,7 +15,6 @@ import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import utils.SaverLoader;
-import entities.Player;
 
 /**
  * The main driver class, initializes all the game states and handles the initial display mode
@@ -72,7 +71,7 @@ public class Driver extends StateBasedGame{
 		
 		int tileSize = 50;
 		
-		addState(new Level0(gc, tileSize, 500, 500));
+		addState(new Level0(gc, tileSize, 30, 20));
 
 		enterState(MAIN_MENU); 
 	}

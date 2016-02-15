@@ -18,6 +18,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -61,6 +62,7 @@ public abstract class Level extends BasicGameState{
 	private Cursor emptyCursor, visibleCursor;
 	
 	protected TileMap map;
+	int mapWidth, mapHeight;
 	protected int tileSize;
 
 	/**
@@ -86,8 +88,8 @@ public abstract class Level extends BasicGameState{
 		
 		this.tileSize = tileSize;
 		
-		this.levelWidth = levelWidth;
-		this.levelHeight = levelHeight;
+		this.levelWidth = levelWidth * tileSize;
+		this.levelHeight = levelHeight * tileSize;
 		Color background = Color.black;
 		Color textColor = Color.lightGray;
 
@@ -102,7 +104,7 @@ public abstract class Level extends BasicGameState{
 		b2 = new SimpleButton(0, 0, buttonWidth, buttonHeight, "Cancel");
 		warning = new Notification(0, 0, gc.getWidth()/3, gc.getHeight()/3, background, textColor, b1, b2, buttonYGap, "Start New Game","Are you sure you want to start a new game? Unsaved progress will be lost.");
 
-		camera = new Camera(gc, levelWidth, levelHeight);
+		camera = new Camera(gc, levelWidth * tileSize, levelHeight * tileSize);
 
 		pauseMenu = new PauseMenu(gc, gc.getGraphics(), Color.black, Color.lightGray);
 
@@ -110,7 +112,7 @@ public abstract class Level extends BasicGameState{
 
 		optionsMenu = new InGameOptionsMenu(gc);
 
-		map = new TileMap(levelWidth/50, levelHeight/50);
+		map = new TileMap(levelWidth, levelHeight);
 	}
 
 	@Override

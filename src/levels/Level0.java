@@ -33,22 +33,24 @@ public class Level0 extends Level{
 		this.sbg = sbg;
 		
 		player = new Player(5, 5, tileSize, tileSize);
-		player.setSprite("/Resources/testPlayerSprite.png", 50, 50);
+		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 		
 		world.add(player);
 		
-		Tile testTile = new Tile(TileEnum.TEST, 50, 50);
+		Tile testTile = new Tile(TileEnum.TEST, tileSize, tileSize);
 		
-		for(int i = 0; i < levelHeight / 50; i++){
-			for(int j = 0; j < levelWidth / 50; j++){
+		for(int i = 0; i < levelWidth / tileSize; i++){
+			for(int j = 0; j < levelHeight / tileSize; j++){
 				map.set(testTile, i, j);
 			}
 		}
+		
+		background = new Rectangle(0, 0, levelWidth * tileSize, levelHeight * tileSize);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.white);
+		g.setColor(Color.black);
 		g.fill(background);
 		
 		map.draw(g);
@@ -70,19 +72,6 @@ public class Level0 extends Level{
 		if(!paused){
 
 			for(Entity e : world){
-				
-				//leave these commented out if you don't want to die
-				//otherwise, uncomment whichever one you want to test
-				
-				//follower.collide(e, gc);
-				//turret1.collide(e, gc);
-				//turret2.collide(e, gc);
-				//spikesUp.collide(e, gc);
-				//spikesDown.collide(e, gc);
-				//spikesLeft.collide(e, gc);
-				//spikesRight.collide(e, gc);
-				//aLaser.collide(e, gc);
-				//sLaser.collide(e, gc);
 				
 				e.update(gc, delta, map);
 			}
