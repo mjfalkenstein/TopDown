@@ -2,16 +2,16 @@ package entities;
 
 import java.util.ArrayList;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Transform;
 
+import utils.Direction;
 import utils.Inventory;
 import utils.Item;
+import utils.TileMap;
 import entities.Entity;
 
 /**
@@ -34,9 +34,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void update(GameContainer gc, int delta) {
-
-		handleInputs(gc);
+	public void update(GameContainer gc, int delta, TileMap map) {
+		handleInputs(gc, map);
 	}
 
 	@Override
@@ -64,9 +63,25 @@ public class Player extends Entity {
 	 * 
 	 * @param gc - GameConatiner
 	 */
-	public void handleInputs(GameContainer gc){
+	public void handleInputs(GameContainer gc, TileMap map){
 		Input input = gc.getInput();
-	
+		
+		if(input.isKeyDown(Input.KEY_W)){
+			y -= 1;
+			direction = Direction.NORTH;
+		}
+		else if(input.isKeyDown(Input.KEY_A)){
+			x -= 1;
+			direction = Direction.EAST;
+		}
+		else if(input.isKeyDown(Input.KEY_S)){
+			y += 1;
+			direction = Direction.SOUTH;
+		}
+		else if(input.isKeyDown(Input.KEY_D)){
+			x += 1;
+			direction = Direction.WEST;
+		}
 	}
 	
 	/**

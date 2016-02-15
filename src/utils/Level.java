@@ -59,6 +59,9 @@ public abstract class Level extends BasicGameState{
 	TrueTypeFont font;
 	float fontSize = 12f;
 	private Cursor emptyCursor, visibleCursor;
+	
+	protected TileMap map;
+	protected int tileSize;
 
 	/**
 	 * Constructor
@@ -68,7 +71,7 @@ public abstract class Level extends BasicGameState{
 	 * @param levelWidth - the width of the level
 	 * @param levelHeight - the height of the level
 	 */
-	public Level(GameContainer gc, Player p, int levelWidth, int levelHeight){
+	public Level(GameContainer gc, int tileSize, int levelWidth, int levelHeight){
 		visibleCursor = Mouse.getNativeCursor();
 		
 		//loading the font
@@ -80,8 +83,9 @@ public abstract class Level extends BasicGameState{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-
-		player = p;
+		
+		this.tileSize = tileSize;
+		
 		this.levelWidth = levelWidth;
 		this.levelHeight = levelHeight;
 		Color background = Color.black;
@@ -106,7 +110,7 @@ public abstract class Level extends BasicGameState{
 
 		optionsMenu = new InGameOptionsMenu(gc);
 
-
+		map = new TileMap(levelWidth/50, levelHeight/50);
 	}
 
 	@Override

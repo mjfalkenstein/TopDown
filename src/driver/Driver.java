@@ -8,11 +8,9 @@ import menuScreens.ResolutionsMenu;
 import menuScreens.SoundMenu;
 import menuScreens.VideoOptionsMenu;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -71,8 +69,10 @@ public class Driver extends StateBasedGame{
 		addState(new VideoOptionsMenu(mainMenu));
 		addState(new ResolutionsMenu(mainMenu));
 		addState(new SoundMenu(mainMenu));
-		Player p = new Player(10, 10, 50, 50);
-		addState(new Level0(gc, p, 3000, 1200));
+		
+		int tileSize = 50;
+		
+		addState(new Level0(gc, tileSize, 500, 500));
 
 		enterState(MAIN_MENU); 
 	}

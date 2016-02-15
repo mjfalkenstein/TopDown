@@ -7,6 +7,7 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Shape;
 
 import utils.Direction;
+import utils.TileMap;
 
 /**
  * This class represents anything that can act as a solid object on the screen
@@ -26,10 +27,10 @@ public abstract class Entity {
 	 */
 	public Entity(int x, int y, float width, float height) {
 		super();
-		this.x = x;
-		this.y = y;
-		startingX = x;
-		startingY = y;
+		this.x = x * width;
+		this.y = y * width;
+		startingX = x * width;
+		startingY = y * height;
 		this.width = width;
 		this.height = height;
 		direction = Direction.NORTH;
@@ -41,7 +42,7 @@ public abstract class Entity {
 	 * @param gc - GameContainer
 	 * @param delta - time difference since the last frame
 	 */
-	public abstract void update(GameContainer gc, int delta);
+	public abstract void update(GameContainer gc, int delta, TileMap map);
 	
 	/**
 	 * Instantly moves the entity to new coordinates (x, y)

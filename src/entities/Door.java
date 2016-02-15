@@ -7,6 +7,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
+import utils.TileMap;
+
 public class Door extends Entity {
 
 	boolean open = false;
@@ -16,7 +18,7 @@ public class Door extends Entity {
 	}
 
 	@Override
-	public void update(GameContainer gc, int delta) {
+	public void update(GameContainer gc, int delta, TileMap map) {
 		//Do nothing, door state is handled in collide method
 	}
 

@@ -24,7 +24,7 @@ public abstract class Item extends Entity{
 	}
 
 	@Override
-	public abstract void update(GameContainer gc, int delta);
+	public abstract void update(GameContainer gc, int delta, TileMap map);
 
 	@Override
 	public abstract void move(float x, float y);

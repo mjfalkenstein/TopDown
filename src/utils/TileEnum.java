@@ -40,5 +40,6 @@ public enum TileEnum {
 	ACID,
 	WATER,
 	STEAM,
-	DOOR
+	DOOR,
+	TEST
 }

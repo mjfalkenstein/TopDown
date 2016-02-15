@@ -1,35 +1,30 @@
 package levels;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
-import utils.BackgroundBarsAnimation;
-import utils.Checkpoint;
 import utils.Level;
-import entities.Door;
+import utils.Tile;
+import utils.TileEnum;
 import entities.Entity;
-import entities.Friendly;
 import entities.Player;
 
 /**
  * A simple test level designed to integrate all entities in one environment
  */
 public class Level0 extends Level{
-
-	Circle background;
-
-	Color sky = Color.decode("#99CCFF");
-	BackgroundBarsAnimation backgroundAnimation;
 	
-	public Level0(GameContainer gc, Player p, int levelWidth, int levelHeight) {
-		super(gc, p, levelWidth, levelHeight);
+	Rectangle background;
+	
+	public Level0(GameContainer gc, int tileSize, int levelWidth, int levelHeight) {
+		super(gc, tileSize, levelWidth, levelHeight);
+		
+		background = new Rectangle(0, 0, levelWidth, levelHeight);
 	}
 
 	@Override
@@ -37,18 +32,29 @@ public class Level0 extends Level{
 		this.gc = gc;
 		this.sbg = sbg;
 		
-		backgroundAnimation = new BackgroundBarsAnimation(gc, Color.white);
-
-		background = new Circle(gc.getWidth()/2, gc.getHeight()*3, gc.getHeight()*2.5f);
+		player = new Player(5, 5, tileSize, tileSize);
+		
+		world.add(player);
+		
+		Tile testTile = new Tile(TileEnum.TEST, 50, 50);
+		
+		for(int i = 0; i < levelHeight / 50; i++){
+			for(int j = 0; j < levelWidth / 50; j++){
+				map.set(testTile, i, j);
+			}
+		}
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setBackground(sky);
-		g.setColor(Color.decode("#99FF33"));
+		g.setColor(Color.white);
 		g.fill(background);
-
-		backgroundAnimation.draw(g);
+		
+		map.draw(g);
+		
+		for(Entity e : world){
+			e.draw(g);
+		}
 		
 		drawLevelEssentials(g);
 	}
@@ -77,7 +83,7 @@ public class Level0 extends Level{
 				//aLaser.collide(e, gc);
 				//sLaser.collide(e, gc);
 				
-				e.update(gc, delta);
+				e.update(gc, delta, map);
 			}
 		}
 		

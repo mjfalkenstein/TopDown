@@ -11,6 +11,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
 
 import utils.Dialogue;
+import utils.TileMap;
 import entities.Entity;
 
 /**
@@ -57,7 +58,7 @@ public class Friendly extends Entity {
 	}
 
 	@Override
-	public void update(GameContainer gc, int delta) {
+	public void update(GameContainer gc, int delta, TileMap map) {
 
 		dialogue.move(x - dialogue.getWidth()/2 + width/2, y - dialogue.getHeight() - 10);
 

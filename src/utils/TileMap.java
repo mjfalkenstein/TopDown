@@ -2,6 +2,8 @@ package utils;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Graphics;
+
 public class TileMap {
 	
 	ArrayList<ArrayList<Tile>> tiles = new ArrayList<ArrayList<Tile>>();
@@ -20,6 +22,10 @@ public class TileMap {
 		return tiles.get(x).get(y);
 	}
 	
+	public void set(Tile tile, int x, int y){
+		tiles.get(x).add(y, tile);
+	}
+	
 	public int getWidth(){
 		return width;
 	}
@@ -28,12 +34,11 @@ public class TileMap {
 		return height;
 	}
 	
-	public void draw(){
+	public void draw(Graphics g){
 		for(int i = 0; i < width; i++){
 			ArrayList<Tile> list = tiles.get(i);
-			for(int j = 0; j < height; j++){
-				Tile tile = list.get(j);
-				tile.draw(i, j);
+			for(int j = 0; j < list.size(); j++){
+				list.get(j).draw(g, i, j);
 			}
 		}
 	}
