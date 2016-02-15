@@ -38,10 +38,22 @@ public class Level0 extends Level{
 		world.add(player);
 		
 		Tile testTile = new Tile(TileEnum.TEST, tileSize, tileSize);
+		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
 		
 		for(int i = 0; i < levelWidth / tileSize; i++){
 			for(int j = 0; j < levelHeight / tileSize; j++){
 				map.set(testTile, i, j);
+			}
+		}
+		
+		for(int i = 3; i <= 7; i++){
+			for(int j = 3; j <= 7; j++){
+				if(j == 3 || j == 7){
+					map.set(blankTile, i, j);
+				}
+				if(i == 3){
+					map.set(blankTile, i, j);
+				}
 			}
 		}
 		
@@ -52,7 +64,7 @@ public class Level0 extends Level{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.translate(-(player.getX() - gc.getWidth()/2), -(player.getY() - gc.getHeight()/2));
 		
-		g.setColor(Color.black);
+		g.setColor(Color.gray);
 		g.fill(background);
 		
 		map.draw(g);

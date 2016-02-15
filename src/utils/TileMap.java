@@ -17,6 +17,14 @@ public class TileMap {
 		for(int i = 0; i < width; i++){
 			tiles.add(new ArrayList<Tile>());
 		}
+		
+		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
+		
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				tiles.get(i).add(j, blankTile);
+			}
+		}
 	}
 	
 	public Tile get(int x, int y){
@@ -24,7 +32,7 @@ public class TileMap {
 	}
 	
 	public void set(Tile tile, int x, int y){
-		tiles.get(x).add(y, tile);
+		tiles.get(x).set(y, tile);
 	}
 	
 	public int getWidth(){

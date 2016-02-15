@@ -25,6 +25,9 @@ public class Tile {
 		case TEST:
 			createTestTile();
 			break;
+		case BLANK:
+			createBlankTile();
+			break;
 		case GRASS:
 			createGrassTile();
 			break;
@@ -129,6 +132,24 @@ public class Tile {
 		}
 	}
 	
+	void createBlankTile(){
+		movement = 1.0f;
+		cover = 0.0f;
+		protection = 0.0f;
+		concealment = 0.0f;
+		damage = 0.0f;
+		flammability = 0.0f;
+		currentX = 0;
+		currentY = 0;
+		pathable = false;
+		
+		try {
+			sprite = new SpriteSheet("Resources/blankTile.png" , 50, 50);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	void createGrassTile(){
 		movement = 1.0f;
 		cover = 0.0f;
@@ -177,5 +198,9 @@ public class Tile {
 	public void move(int x, int y){
 		this.x = x;
 		this.y = y;
+	}
+	
+	public boolean pathable(){
+		return pathable;
 	}
 }

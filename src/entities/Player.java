@@ -24,7 +24,8 @@ public class Player extends Entity {
 	boolean dead = false;
 	boolean isWalking = false;
 	Image image;
-	
+	Direction spriteDirection = Direction.NORTH;
+
 	int xCoord, yCoord;
 
 	/**
@@ -94,7 +95,7 @@ public class Player extends Entity {
 				break;
 			}
 		}
-		
+
 		xCoord = (int) (x / map.tileSize());
 		yCoord = (int) (y / map.tileSize());
 	}
@@ -121,34 +122,63 @@ public class Player extends Entity {
 	public void handleInputs(GameContainer gc, TileMap map){
 		Input input = gc.getInput();
 
+		if(!isWalking){
+			if(input.isKeyPressed(Input.KEY_W)){
+				spriteDirection = Direction.NORTH;
+			}
+			else if(input.isKeyPressed(Input.KEY_A)){
+				spriteDirection = Direction.WEST;
+			}
+			else if(input.isKeyPressed(Input.KEY_S)){
+				spriteDirection = Direction.SOUTH;
+			}
+			else if(input.isKeyPressed(Input.KEY_D)){
+				spriteDirection = Direction.EAST;
+			}
+		}else{
+			input.clearKeyPressedRecord();
+		}
+
 		if(input.isKeyDown(Input.KEY_W)){
-			if(!isWalking){
-				direction = Direction.NORTH;
-				isWalking = true;
+			if(map.get(xCoord, yCoord-1).pathable()){
+				if(!isWalking){
+					spriteDirection = Direction.NORTH;
+					direction = Direction.NORTH;
+					isWalking = true;
+				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_A)){
-			if(!isWalking){
-				direction = Direction.WEST;
-				isWalking = true;
+			if(map.get(xCoord-1, yCoord).pathable()){
+				if(!isWalking){
+					spriteDirection = Direction.WEST;
+					direction = Direction.WEST;
+					isWalking = true;
+				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_S)){
-			if(!isWalking){
-				direction = Direction.SOUTH;
-				isWalking = true;
+			if(map.get(xCoord, yCoord+1).pathable()){
+				if(!isWalking){
+					spriteDirection = Direction.SOUTH;
+					direction = Direction.SOUTH;
+					isWalking = true;
+				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_D)){
-			if(!isWalking){
-				direction = Direction.EAST;
-				isWalking = true;
+			if(map.get(xCoord+1, yCoord).pathable()){
+				if(!isWalking){
+					spriteDirection = Direction.EAST;
+					direction = Direction.EAST;
+					isWalking = true;
+				}
 			}
 		}
 	}
-	
+
 	public void draw(Graphics g){
-		switch(direction){
+		switch(spriteDirection){
 		case NORTH:
 			image = sprite.getSprite(0, 0);
 			break;
