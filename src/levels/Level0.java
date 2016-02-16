@@ -30,7 +30,7 @@ public class Level0 extends Level{
 		super(gc, tileSize, levelWidth, levelHeight);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
-		testRegion = new Region(1, 1, 1, 1, tileSize, Color.green);
+		testRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
 	}
 
 	@Override
@@ -54,10 +54,7 @@ public class Level0 extends Level{
 
 		for(int i = 3; i <= 7; i++){
 			for(int j = 3; j <= 7; j++){
-				if(j == 3 || j == 7){
-					map.set(blankTile, i, j);
-				}
-				if(i == 3){
+				if(j == 3 || j == 7 || i == 3){
 					map.set(blankTile, i, j);
 				}
 			}
