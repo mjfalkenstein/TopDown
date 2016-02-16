@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import utils.Dialogue;
 import utils.Level;
+import utils.Region;
 import utils.Tile;
 import utils.TileEnum;
 import entities.Entity;
@@ -19,37 +20,38 @@ import entities.Player;
  * A simple test level designed to integrate all entities in one environment
  */
 public class Level0 extends Level{
-	
+
 	Rectangle background;
 	String message = "This is a test message, it should take a few different windows to display";
 	Dialogue dialogue;
+	Region testRegion;
 
-	
 	public Level0(GameContainer gc, int tileSize, int levelWidth, int levelHeight) {
 		super(gc, tileSize, levelWidth, levelHeight);
-		
+
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
+		testRegion = new Region(1, 1, 1, 1, tileSize, Color.green);
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		this.gc = gc;
 		this.sbg = sbg;
-		
+
 		player = new Player(5, 5, tileSize, tileSize);
 		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
-		
+
 		world.add(player);
-		
+
 		Tile testTile = new Tile(TileEnum.TEST, tileSize, tileSize);
 		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
-		
+
 		for(int i = 0; i < levelWidth / tileSize; i++){
 			for(int j = 0; j < levelHeight / tileSize; j++){
 				map.set(testTile, i, j);
 			}
 		}
-		
+
 		for(int i = 3; i <= 7; i++){
 			for(int j = 3; j <= 7; j++){
 				if(j == 3 || j == 7){
@@ -60,29 +62,31 @@ public class Level0 extends Level{
 				}
 			}
 		}
-		
+
 		dialogue = new Dialogue(0, 0, message, Color.white, Color.black);
-		
+
 		background = new Rectangle(-levelWidth * tileSize / 2, -levelHeight * tileSize / 2, levelWidth * tileSize, levelHeight * tileSize);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.translate(-(player.getX() - gc.getWidth()/2), -(player.getY() - gc.getHeight()/2));
-		
+
 		g.setColor(Color.gray);
 		g.fill(background);
-		
+
 		map.draw(g);
-		
+
 		for(Entity e : world){
 			e.draw(g);
 		}
-		
+
 		dialogue.draw(g);
-		
+
+		testRegion.draw(g);
+
 		drawLevelEssentials(g);
-		
+
 		g.translate((player.getX() - gc.getWidth()/2), (player.getY() - gc.getHeight()/2));
 	}
 
@@ -96,13 +100,17 @@ public class Level0 extends Level{
 		if(!paused){
 
 			for(Entity e : world){
-				
+
 				e.update(gc, delta, map);
 			}
 		}
-		
+
 		dialogue.move(player.getX() - dialogue.getWidth(), player.getY() - dialogue.getHeight());
 		
+		if(!testRegion.contains(player)){
+			dialogue.hide();
+		}
+
 		updateLevelEssentials(mouseX, mouseY, delta);
 	}
 
@@ -111,7 +119,7 @@ public class Level0 extends Level{
 		//make sure to add cameraX/cameraY to account for moving camera
 		x += camera.getX();
 		y += camera.getY();
-		
+
 		handlePauseMenuInputs(button, x, y);
 	}
 
@@ -126,11 +134,13 @@ public class Level0 extends Level{
 				pauseMenu.hide();
 			}
 		}
-		if(key == Input.KEY_SPACE){
-			if(!dialogue.showing()){
-				dialogue.show();
-			}else{
-				dialogue.advance();
+		if(testRegion.contains(player)){
+			if(key == Input.KEY_SPACE){
+				if(!dialogue.showing()){
+					dialogue.show();
+				}else{
+					dialogue.advance();
+				}
 			}
 		}
 	}
