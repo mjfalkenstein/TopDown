@@ -140,38 +140,46 @@ public class Player extends Entity {
 		}
 
 		if(input.isKeyDown(Input.KEY_W)){
-			if(map.get(xCoord, yCoord-1).pathable()){
-				if(!isWalking){
-					spriteDirection = Direction.NORTH;
-					direction = Direction.NORTH;
-					isWalking = true;
+			if(yCoord > 0){
+				if(map.get(xCoord, yCoord-1).pathable()){
+					if(!isWalking){
+						spriteDirection = Direction.NORTH;
+						direction = Direction.NORTH;
+						isWalking = true;
+					}
 				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_A)){
-			if(map.get(xCoord-1, yCoord).pathable()){
-				if(!isWalking){
-					spriteDirection = Direction.WEST;
-					direction = Direction.WEST;
-					isWalking = true;
+			if(xCoord > 0){
+				if(map.get(xCoord-1, yCoord).pathable()){
+					if(!isWalking){
+						spriteDirection = Direction.WEST;
+						direction = Direction.WEST;
+						isWalking = true;
+					}
 				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_S)){
-			if(map.get(xCoord, yCoord+1).pathable()){
-				if(!isWalking){
-					spriteDirection = Direction.SOUTH;
-					direction = Direction.SOUTH;
-					isWalking = true;
+			if(yCoord < map.getHeight()-1){
+				if(map.get(xCoord, yCoord+1).pathable()){
+					if(!isWalking){
+						spriteDirection = Direction.SOUTH;
+						direction = Direction.SOUTH;
+						isWalking = true;
+					}
 				}
 			}
 		}
 		else if(input.isKeyDown(Input.KEY_D)){
-			if(map.get(xCoord+1, yCoord).pathable()){
-				if(!isWalking){
-					spriteDirection = Direction.EAST;
-					direction = Direction.EAST;
-					isWalking = true;
+			if(xCoord < map.getWidth()-1){
+				if(map.get(xCoord+1, yCoord).pathable()){
+					if(!isWalking){
+						spriteDirection = Direction.EAST;
+						direction = Direction.EAST;
+						isWalking = true;
+					}
 				}
 			}
 		}

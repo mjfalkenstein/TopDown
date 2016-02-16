@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import utils.Dialogue;
 import utils.Level;
 import utils.Tile;
 import utils.TileEnum;
@@ -20,6 +21,9 @@ import entities.Player;
 public class Level0 extends Level{
 	
 	Rectangle background;
+	String message = "This is a test message";
+	Dialogue dialogue;
+
 	
 	public Level0(GameContainer gc, int tileSize, int levelWidth, int levelHeight) {
 		super(gc, tileSize, levelWidth, levelHeight);
@@ -57,6 +61,8 @@ public class Level0 extends Level{
 			}
 		}
 		
+		dialogue = new Dialogue(0, 0, message, Color.white, Color.black);
+		
 		background = new Rectangle(-levelWidth * tileSize / 2, -levelHeight * tileSize / 2, levelWidth * tileSize, levelHeight * tileSize);
 	}
 
@@ -72,6 +78,8 @@ public class Level0 extends Level{
 		for(Entity e : world){
 			e.draw(g);
 		}
+		
+		dialogue.draw(g);
 		
 		drawLevelEssentials(g);
 		
@@ -115,6 +123,9 @@ public class Level0 extends Level{
 				unpause();
 				pauseMenu.hide();
 			}
+		}
+		if(key == Input.KEY_SPACE){
+			dialogue.show();
 		}
 	}
 
