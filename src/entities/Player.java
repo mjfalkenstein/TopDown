@@ -25,6 +25,7 @@ public class Player extends Entity {
 	boolean isWalking = false;
 	Image image;
 	Direction spriteDirection = Direction.NORTH;
+	int speed = 1;
 
 	int xCoord, yCoord;
 
@@ -42,6 +43,13 @@ public class Player extends Entity {
 	@Override
 	public void update(GameContainer gc, int delta, TileMap map) {
 		handleInputs(gc, map);
+		
+
+		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
+			speed = 2;
+		}else{
+			speed = 1;
+		}
 
 		if(isWalking){
 			switch(direction){
@@ -51,7 +59,7 @@ public class Player extends Entity {
 					isWalking = false;
 				}
 				else{
-					x += 1;
+					x += speed;
 					if(x % map.tileSize() == 0){
 						isWalking = false;
 					}
@@ -63,7 +71,7 @@ public class Player extends Entity {
 					isWalking = false;
 				}
 				else{
-					y -= 1;
+					y -= speed;
 					if(y % map.tileSize() == 0){
 						isWalking = false;
 					}
@@ -75,7 +83,7 @@ public class Player extends Entity {
 					isWalking = false;
 				}
 				else{
-					y += 1;
+					y += speed;
 					if(y % map.tileSize() == 0){
 						isWalking = false;
 					}
@@ -87,7 +95,7 @@ public class Player extends Entity {
 					isWalking = false;
 				}
 				else{
-					x -= 1;
+					x -= speed;
 					if(x % map.tileSize() == 0){
 						isWalking = false;
 					}
