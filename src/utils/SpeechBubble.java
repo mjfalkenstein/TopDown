@@ -12,14 +12,15 @@ import org.newdawn.slick.geom.RoundedRectangle;
 public class SpeechBubble {
 
 	float x, y;
-	float width = 200;
-	float height = 75;
+	float width = 210;
+	float height = 70;
 	String text;
 	RoundedRectangle body, hint;
 	Color bg, textColor;
 	boolean showing = false;
 	String[] textWords;
 	ArrayList<String> lines;
+	String toAdvance = "SPACE";
 	
 	static int maxLength = 150;
 
@@ -80,12 +81,12 @@ public class SpeechBubble {
 			int counter = 0;
 			for(String s : lines){	
 				//if((body.getY() + 10) + g.getFont().getLineHeight() * counter + g.getFont().getHeight(s) < body.getMaxY()){
-					g.drawString(s, body.getX() + 10, (body.getY() + 10) + g.getFont().getLineHeight() * counter);
+					g.drawString(s, body.getX() + 5, (body.getY() + 10) + g.getFont().getLineHeight() * counter);
 				//}
 				counter++;
 			}
 
-			g.drawString("L-Shift", hint.getX() + hint.getWidth()/2 - g.getFont().getWidth("L-Shift")/2, hint.getY() + hint.getHeight()/2 - g.getFont().getHeight("L-Shift")/2 - 3);
+			g.drawString(toAdvance, hint.getX() + hint.getWidth()/2 - g.getFont().getWidth(toAdvance)/2, hint.getY() + hint.getHeight()/2 - g.getFont().getHeight("L-Shift")/2 - 3);
 
 		}
 	}

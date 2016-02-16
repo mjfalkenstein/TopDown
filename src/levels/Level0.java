@@ -21,7 +21,7 @@ import entities.Player;
 public class Level0 extends Level{
 	
 	Rectangle background;
-	String message = "This is a test message";
+	String message = "This is a test message, it should take a few different windows to display";
 	Dialogue dialogue;
 
 	
@@ -101,6 +101,8 @@ public class Level0 extends Level{
 			}
 		}
 		
+		dialogue.move(player.getX() - dialogue.getWidth(), player.getY() - dialogue.getHeight());
+		
 		updateLevelEssentials(mouseX, mouseY, delta);
 	}
 
@@ -125,7 +127,11 @@ public class Level0 extends Level{
 			}
 		}
 		if(key == Input.KEY_SPACE){
-			dialogue.show();
+			if(!dialogue.showing()){
+				dialogue.show();
+			}else{
+				dialogue.advance();
+			}
 		}
 	}
 
