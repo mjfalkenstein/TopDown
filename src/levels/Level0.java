@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import driver.Driver;
 import utils.Dialogue;
 import utils.Level;
 import utils.Region;
@@ -15,6 +16,7 @@ import utils.Tile;
 import utils.TileEnum;
 import entities.Entity;
 import entities.Player;
+import events.StateSwitchEvent;
 
 /**
  * A simple test level designed to integrate all entities in one environment
@@ -24,13 +26,16 @@ public class Level0 extends Level{
 	Rectangle background;
 	String message = "This is a test message, it should take a few different windows to display";
 	Dialogue dialogue;
-	Region testRegion;
+	Region testDialogueRegion, testEventRegion;
+	StateSwitchEvent testEvent;
 
 	public Level0(GameContainer gc, int tileSize, int levelWidth, int levelHeight) {
 		super(gc, tileSize, levelWidth, levelHeight);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
-		testRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
+		testEvent = new StateSwitchEvent(Driver.MAIN_MENU);
+		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
+		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.red, testEvent);
 	}
 
 	@Override
@@ -42,6 +47,8 @@ public class Level0 extends Level{
 		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 
 		world.add(player);
+		world.add(testDialogueRegion);
+		world.add(testEventRegion);
 
 		Tile testTile = new Tile(TileEnum.TEST, tileSize, tileSize);
 		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
@@ -74,15 +81,9 @@ public class Level0 extends Level{
 
 		map.draw(g);
 
-		for(Entity e : world){
-			e.draw(g);
-		}
+		drawLevelEssentials(g);
 
 		dialogue.draw(g);
-
-		testRegion.draw(g);
-
-		drawLevelEssentials(g);
 
 		g.translate((player.getX() - gc.getWidth()/2), (player.getY() - gc.getHeight()/2));
 	}
@@ -95,18 +96,17 @@ public class Level0 extends Level{
 
 		//make sure to call collide before update
 		if(!paused){
-
 			for(Entity e : world){
-
 				e.update(gc, delta, map);
 			}
 		}
 
 		dialogue.move(player.getX() - dialogue.getWidth(), player.getY() - dialogue.getHeight());
 		
-		if(!testRegion.contains(player)){
+		if(!testDialogueRegion.contains(player)){
 			dialogue.hide();
 		}
+		if(testEventRegion.contains(player))testEventRegion.doEvent(sbg);
 
 		updateLevelEssentials(mouseX, mouseY, delta);
 	}
@@ -131,7 +131,7 @@ public class Level0 extends Level{
 				pauseMenu.hide();
 			}
 		}
-		if(testRegion.contains(player)){
+		if(testDialogueRegion.contains(player)){
 			if(key == Input.KEY_SPACE){
 				if(!dialogue.showing()){
 					dialogue.show();

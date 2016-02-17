@@ -2,12 +2,10 @@ package entities;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Rectangle;
 
 import utils.Direction;
 import utils.Inventory;
@@ -243,5 +241,30 @@ public class Player extends Entity {
 
 	public boolean has(Item item){
 		return inventory.contains(item);
+	}
+	
+	public boolean isWalking(){
+		return isWalking;
+	}
+	
+	public Direction getDirection(){
+		return direction;
+	}
+	
+	public void setWalking(boolean value){
+		isWalking = value;
+	}
+	
+	public int getXCoord(){
+		return xCoord;
+	}
+	
+	public int getYCoord(){
+		return yCoord;
+	}
+	
+	public void setDirection(Direction d){
+		direction = d;
+		spriteDirection = d;
 	}
 }

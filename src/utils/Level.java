@@ -18,7 +18,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -145,6 +144,28 @@ public abstract class Level extends BasicGameState{
 		goToMainMenu = false;
 		quit = false;
 		newGame = false;
+		
+		if(player.isWalking()){
+			player.setWalking(false);
+			switch(player.getDirection()){
+			case EAST:
+				player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
+				player.setDirection(Direction.WEST);
+				break;
+			case NORTH:
+				player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
+				player.setDirection(Direction.SOUTH);
+				break;
+			case SOUTH:
+				player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
+				player.setDirection(Direction.NORTH);
+				break;
+			case WEST:
+				player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
+				player.setDirection(Direction.EAST);
+				break;
+			}
+		}
 	}
 
 	@Override

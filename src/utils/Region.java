@@ -4,20 +4,33 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.RoundedRectangle;
+import org.newdawn.slick.state.StateBasedGame;
 
 import entities.Entity;
+import events.Event;
 
 public class Region extends Entity {
 	
 	int tileSize;
 	Color color;
 	RoundedRectangle highlight;
+	Event event;
 	
 	public Region(int x, int y, float width, float height, int tileSize, Color color) {
 		super(x, y, width, height);
 		
 		this.color = color;
 		this.tileSize = tileSize;
+		
+		highlight = new RoundedRectangle(x * tileSize, y * tileSize, width * tileSize, height * tileSize, 5);
+	}
+	
+	public Region(int x, int y, float width, float height, int tileSize, Color color, Event event) {
+		super(x, y, width, height);
+		
+		this.color = color;
+		this.tileSize = tileSize;
+		this.event = event;
 		
 		highlight = new RoundedRectangle(x * tileSize, y * tileSize, width * tileSize, height * tileSize, 5);
 	}
@@ -36,10 +49,16 @@ public class Region extends Entity {
 	@Override
 	public void draw(Graphics g) {
 		g.setLineWidth(3);
+		g.setColor(color);
 		g.draw(highlight);
 		Color c = new Color(color.r, color.g, color.b, 0.2f);
 		g.setColor(c);
 		g.fill(highlight);
+	}
+	
+	public void doEvent(StateBasedGame sbg){
+		if(event != null)
+			event.act(sbg);
 	}
 	
 	public boolean contains(Entity e){
