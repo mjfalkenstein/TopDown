@@ -21,27 +21,29 @@ import events.StateSwitchEvent;
 /**
  * A simple test level designed to integrate all entities in one environment
  */
-public class Level0 extends Level{
+public class Level00 extends Level{
 
 	Rectangle background;
-	String message = "Welcome to test level 0! Press Space to advance this message, and move to the blue area to return to test level 00";
+	String message = "Welcome to test level 00! Press Space to advance this message, and move to the red area to return to test level 0";
 	Dialogue dialogue;
 	Region testDialogueRegion, testEventRegion;
 	StateSwitchEvent testEvent;
 
-	public Level0(GameContainer gc, Player player, int tileSize, int levelWidth, int levelHeight) {
+	public Level00(GameContainer gc, Player player, int tileSize, int levelWidth, int levelHeight) {
 		super(gc, player, tileSize, levelWidth, levelHeight);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
-		testEvent = new StateSwitchEvent(Driver.LEVEL_00);
+		testEvent = new StateSwitchEvent(Driver.LEVEL_0);
 		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
-		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.blue, testEvent);
+		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.red, testEvent);
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		this.gc = gc;
 		this.sbg = sbg;
+
+		player = new Player(5, 5, tileSize, tileSize);
 		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 
 		world.add(player);
@@ -59,7 +61,7 @@ public class Level0 extends Level{
 
 		for(int i = 3; i <= 7; i++){
 			for(int j = 3; j <= 7; j++){
-				if(j == 3 || j == 7 || i == 3){
+				if(j == 7 || i == 7 || i == 3){
 					map.set(blankTile, i, j);
 				}
 			}
@@ -142,6 +144,6 @@ public class Level0 extends Level{
 
 	@Override
 	public int getID() {
-		return 6;
+		return Driver.LEVEL_00;
 	}
 }

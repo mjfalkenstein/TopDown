@@ -72,8 +72,10 @@ public abstract class Level extends BasicGameState{
 	 * @param levelWidth - the width of the level
 	 * @param levelHeight - the height of the level
 	 */
-	public Level(GameContainer gc, int tileSize, int levelWidth, int levelHeight){
+	public Level(GameContainer gc, Player player, int tileSize, int levelWidth, int levelHeight){
 		visibleCursor = Mouse.getNativeCursor();
+		
+		this.player = player;
 		
 		//loading the font
 		try{

@@ -1,6 +1,7 @@
 package driver;
 
 import levels.Level0;
+import levels.Level00;
 import menuScreens.LoadMenu;
 import menuScreens.MainMenu;
 import menuScreens.OptionsMenu;
@@ -14,6 +15,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
+import entities.Player;
 import utils.SaverLoader;
 
 /**
@@ -32,6 +34,7 @@ public class Driver extends StateBasedGame{
 	public static final int SOUND_MENU 				= 4;
 	public static final int LOAD_GAME				= 5;
 	public static final int LEVEL_0					= 6;
+	public static final int LEVEL_00				= 7;
 
 	/**
 	 * Constructor
@@ -68,10 +71,12 @@ public class Driver extends StateBasedGame{
 		addState(new VideoOptionsMenu(mainMenu));
 		addState(new ResolutionsMenu(mainMenu));
 		addState(new SoundMenu(mainMenu));
-		
+
 		int tileSize = 50;
+		Player player = new Player(5, 5, tileSize, tileSize);
 		
-		addState(new Level0(gc, tileSize, 10, 10));
+		addState(new Level0(gc, player, tileSize, 10, 10));
+		addState(new Level00(gc, player, tileSize, 10, 8));
 
 		enterState(MAIN_MENU); 
 	}
