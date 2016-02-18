@@ -43,7 +43,6 @@ public class Level000 extends Level{
 		this.gc = gc;
 		this.sbg = sbg;
 
-		player = new Player(5, 5, tileSize, tileSize);
 		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 
 		world.add(player);

@@ -42,8 +42,7 @@ public class Level00 extends Level{
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		this.gc = gc;
 		this.sbg = sbg;
-
-		player = new Player(5, 5, tileSize, tileSize);
+		
 		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 
 		world.add(player);

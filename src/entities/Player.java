@@ -33,8 +33,8 @@ public class Player extends Entity {
 	 * @param boundingBox - a Rectangle representing the borders of the Platform
 	 * @param velocity - the initial velocity
 	 */
-	public Player(int x, int y, float width, float height) {
-		super(x, y, width, height);
+	public Player(float size) {
+		super(0, 0, size, size);
 		inventory = new Inventory(new ArrayList<Item>());
 	}
 
@@ -42,7 +42,6 @@ public class Player extends Entity {
 	public void update(GameContainer gc, int delta, TileMap map) {
 		handleInputs(gc, map);
 		
-		gc.getInput().enableKeyRepeat(20, Input.KEY_LSHIFT);
 		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
 			x -= x % 2;
 			y -= y % 2;
