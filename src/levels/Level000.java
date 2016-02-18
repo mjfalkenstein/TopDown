@@ -143,6 +143,6 @@ public class Level000 extends Level{
 
 	@Override
 	public int getID() {
-		return Driver.LEVEL_00;
+		return Driver.LEVEL_000;
 	}
 }

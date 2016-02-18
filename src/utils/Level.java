@@ -157,19 +157,19 @@ public abstract class Level extends BasicGameState{
 			player.setWalking(false);
 			switch(player.getDirection()){
 			case EAST:
-				player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
+				//player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
 				player.setDirection(Direction.WEST);
 				break;
 			case NORTH:
-				player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
+				//player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
 				player.setDirection(Direction.SOUTH);
 				break;
 			case SOUTH:
-				player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
+				//player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
 				player.setDirection(Direction.NORTH);
 				break;
 			case WEST:
-				player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
+				//player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
 				player.setDirection(Direction.EAST);
 				break;
 			}
@@ -177,6 +177,8 @@ public abstract class Level extends BasicGameState{
 		
 		player.setXCoord(enterX);
 		player.setYCoord(enterY);
+		
+		System.out.println("Entering state: " + sbg.getCurrentStateID());
 	}
 
 	@Override
@@ -186,6 +188,8 @@ public abstract class Level extends BasicGameState{
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
+		enterX = player.getXCoord();
+		enterY = player.getYCoord();
 	}
 
 	/**
