@@ -271,9 +271,11 @@ public class Player extends Entity {
 	
 	public void setXCoord(int x){
 		xCoord = x;
+		this.x = x * width;
 	}
 	
 	public void setYCoord(int y){
 		yCoord = y;
+		this.y = y * width;
 	}
 }
