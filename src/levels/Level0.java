@@ -29,8 +29,8 @@ public class Level0 extends Level{
 	Region testDialogueRegion, testEventRegion;
 	StateSwitchEvent testEvent;
 
-	public Level0(GameContainer gc, Player player, int tileSize, int levelWidth, int levelHeight) {
-		super(gc, player, tileSize, levelWidth, levelHeight);
+	public Level0(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight) {
+		super(gc, player, tileSize, spriteSize, levelWidth, levelHeight);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
 		testEvent = new StateSwitchEvent(Driver.LEVEL_00);
@@ -48,12 +48,11 @@ public class Level0 extends Level{
 		world.add(testDialogueRegion);
 		world.add(testEventRegion);
 
-		Tile testTile = new Tile(TileEnum.TEST, tileSize, tileSize);
 		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
 
 		for(int i = 0; i < levelWidth / tileSize; i++){
 			for(int j = 0; j < levelHeight / tileSize; j++){
-				map.set(testTile, i, j);
+				map.set(new Tile(TileEnum.GRASS, tileSize, spriteSize), i, j);
 			}
 		}
 

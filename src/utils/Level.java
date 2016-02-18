@@ -62,7 +62,7 @@ public abstract class Level extends BasicGameState{
 	
 	protected TileMap map;
 	int mapWidth, mapHeight;
-	protected int tileSize;
+	protected int tileSize, spriteSize;
 
 	/**
 	 * Constructor
@@ -72,7 +72,7 @@ public abstract class Level extends BasicGameState{
 	 * @param levelWidth - the width of the level
 	 * @param levelHeight - the height of the level
 	 */
-	public Level(GameContainer gc, Player player, int tileSize, int levelWidth, int levelHeight){
+	public Level(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight){
 		visibleCursor = Mouse.getNativeCursor();
 		
 		this.player = player;
@@ -88,6 +88,7 @@ public abstract class Level extends BasicGameState{
 		}
 		
 		this.tileSize = tileSize;
+		this.spriteSize = spriteSize;
 		
 		this.levelWidth = levelWidth * tileSize;
 		this.levelHeight = levelHeight * tileSize;

@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Random;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -8,18 +10,19 @@ import org.newdawn.slick.SpriteSheet;
 public class Tile {
 	
 	SpriteSheet sprite;
-	int width, height;
+	int tileSize, spriteSize;
 	int currentX, currentY, x, y;
 	TileEnum type;
 	boolean pathable;
+	Image image;
 	
 	float movement, cover, protection, concealment, damage, flammability;
 	
-	public Tile(TileEnum type, int width, int height){
+	public Tile(TileEnum type, int tileSize, int spriteSize){
 		this.type = type;
 		
-		this.width = width;
-		this.height = height;
+		this.tileSize = tileSize;
+		this.spriteSize = spriteSize;
 		
 		switch(type){
 		case TEST:
@@ -130,6 +133,7 @@ public class Tile {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		image = sprite.getSprite(currentX, currentY);
 	}
 	
 	void createBlankTile(){
@@ -148,6 +152,7 @@ public class Tile {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		image = sprite.getSprite(currentX, currentY);
 	}
 	
 	void createGrassTile(){
@@ -157,9 +162,20 @@ public class Tile {
 		concealment = 0.0f;
 		damage = 0.0f;
 		flammability = 0.0f;
-		currentX = 0;
+		Random r = new Random();
+		currentX = r.nextInt(3);
 		currentY = 0;
 		pathable = true;
+		
+		try {
+			sprite = new SpriteSheet("Resources/grass.png" , spriteSize, spriteSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		image = sprite.getSprite(currentX, currentY);
+		if(r.nextInt(2) == 1){
+			image = image.getFlippedCopy(true, false);
+		}
 	}
 	
 	void createDirtTile(){
@@ -187,8 +203,7 @@ public class Tile {
 	}
 	
 	public void draw(Graphics g, int i, int j){
-		Image image = sprite.getSprite(currentX, currentY);
-		image.draw(x + i * width, y + j * height);
+		image.draw(i * tileSize - (spriteSize - tileSize)/2, j * tileSize - (spriteSize - tileSize)/2);
 	}
 	
 	public void setSprite(SpriteSheet newSprite){

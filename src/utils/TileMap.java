@@ -47,7 +47,18 @@ public class TileMap {
 		for(int i = 0; i < width; i++){
 			ArrayList<Tile> list = tiles.get(i);
 			for(int j = 0; j < list.size(); j++){
-				list.get(j).draw(g, i, j);
+				if(list.get(j).type == TileEnum.GRASS){
+					list.get(j).draw(g, i, j);
+				}
+			}
+		}
+		
+		for(int i = 0; i < width; i++){
+			ArrayList<Tile> list = tiles.get(i);
+			for(int j = 0; j < list.size(); j++){
+				if(list.get(j).type != TileEnum.GRASS){
+					list.get(j).draw(g, i, j);
+				}
 			}
 		}
 	}
@@ -62,7 +73,7 @@ public class TileMap {
 	}
 	
 	public int tileSize(){
-		return tiles.get(0).get(0).width;
+		return tiles.get(0).get(0).tileSize;
 	}
 	
 	public int minX(){
