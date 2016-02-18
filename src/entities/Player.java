@@ -42,8 +42,10 @@ public class Player extends Entity {
 	public void update(GameContainer gc, int delta, TileMap map) {
 		handleInputs(gc, map);
 		
-
+		gc.getInput().enableKeyRepeat(20, Input.KEY_LSHIFT);
 		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
+			x -= x % 2;
+			y -= y % 2;
 			speed = 2;
 		}else{
 			speed = 1;
@@ -266,5 +268,13 @@ public class Player extends Entity {
 	public void setDirection(Direction d){
 		direction = d;
 		spriteDirection = d;
+	}
+	
+	public void setXCoord(int x){
+		xCoord = x;
+	}
+	
+	public void setYCoord(int y){
+		yCoord = y;
 	}
 }

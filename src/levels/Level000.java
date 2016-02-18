@@ -21,21 +21,21 @@ import events.StateSwitchEvent;
 /**
  * A simple test level designed to integrate all entities in one environment
  */
-public class Level00 extends Level{
+public class Level000 extends Level{
 
 	Rectangle background;
-	String message = "Welcome to test level 00! Press Space to advance this message, and move to the red area to return to test level 0";
+	String message = "Welcome to test level 000! Press Space to advance this message, and move to the yellow area to return to test level 0";
 	Dialogue dialogue;
 	Region testDialogueRegion, testEventRegion;
 	StateSwitchEvent testEvent;
 
-	public Level00(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight, int enterX, int enterY) {
+	public Level000(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight, int enterX, int enterY) {
 		super(gc, player, tileSize, spriteSize, levelWidth, levelHeight, enterX, enterY);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
-		testEvent = new StateSwitchEvent(Driver.LEVEL_000);
+		testEvent = new StateSwitchEvent(Driver.LEVEL_0);
 		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
-		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.red, testEvent);
+		testEventRegion = new Region(2, 2, 1, 1, tileSize, Color.yellow, testEvent);
 	}
 
 	@Override
@@ -59,9 +59,9 @@ public class Level00 extends Level{
 			}
 		}
 
-		for(int i = 3; i <= 7; i++){
-			for(int j = 3; j <= 7; j++){
-				if(j == 7 || i == 7 || i == 3){
+		for(int i = 0; i < map.getWidth(); i++){
+			for(int j = 0; j < map.getHeight(); j++){
+				if(i == 0 || j == 2){
 					map.set(blankTile, i, j);
 				}
 			}

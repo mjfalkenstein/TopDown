@@ -29,8 +29,8 @@ public class Level0 extends Level{
 	Region testDialogueRegion, testEventRegion;
 	StateSwitchEvent testEvent;
 
-	public Level0(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight) {
-		super(gc, player, tileSize, spriteSize, levelWidth, levelHeight);
+	public Level0(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight, int enterX, int enterY) {
+		super(gc, player, tileSize, spriteSize, levelWidth, levelHeight, enterX, enterY);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
 		testEvent = new StateSwitchEvent(Driver.LEVEL_00);

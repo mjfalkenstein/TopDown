@@ -2,6 +2,7 @@ package driver;
 
 import levels.Level0;
 import levels.Level00;
+import levels.Level000;
 import menuScreens.LoadMenu;
 import menuScreens.MainMenu;
 import menuScreens.OptionsMenu;
@@ -35,6 +36,7 @@ public class Driver extends StateBasedGame{
 	public static final int LOAD_GAME				= 5;
 	public static final int LEVEL_0					= 6;
 	public static final int LEVEL_00				= 7;
+	public static final int LEVEL_000				= 8;
 
 	/**
 	 * Constructor
@@ -74,10 +76,11 @@ public class Driver extends StateBasedGame{
 
 		int tileSize = 50;
 		int spriteSize = 60;
-		Player player = new Player(5, 5, tileSize, tileSize);
+		Player player = new Player(0, 0, tileSize, tileSize);
 		
-		addState(new Level0(gc, player, tileSize, spriteSize, 10, 10));
-		addState(new Level00(gc, player, tileSize, spriteSize, 10, 8));
+		addState(new Level0(gc, player, tileSize, spriteSize, 10, 10, 5, 5));
+		addState(new Level00(gc, player, tileSize, spriteSize, 10, 8, 2, 2));
+		addState(new Level000(gc, player, tileSize, spriteSize, 5, 5, 1, 1));
 
 		enterState(MAIN_MENU); 
 	}
