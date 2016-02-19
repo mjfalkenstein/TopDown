@@ -48,18 +48,24 @@ public class Level0 extends Level{
 		world.add(testDialogueRegion);
 		world.add(testEventRegion);
 
-		Tile blankTile = new Tile(TileEnum.BLANK, tileSize, tileSize);
-
 		for(int i = 0; i < levelWidth / tileSize; i++){
 			for(int j = 0; j < levelHeight / tileSize; j++){
-				map.set(new Tile(TileEnum.GRASS, tileSize, spriteSize), i, j);
+				if(i > 10 && i < 14 && j > 7 && j < 11){
+					map.set(new Tile(TileEnum.GRASSY_MUD, tileSize, spriteSize), i, j);
+				}else if(i > 10 && i < 14 && j > 10 && j < 14){
+					map.set(new Tile(TileEnum.DIRT, tileSize, spriteSize), i, j);
+				}else if(i > 10 && i < 14 && j > 4 && j < 8){
+					map.set(new Tile(TileEnum.SAND, tileSize, spriteSize), i, j);
+				}else{
+					map.set(new Tile(TileEnum.GRASS, tileSize, spriteSize), i, j);
+				}
 			}
 		}
 
 		for(int i = 3; i <= 7; i++){
 			for(int j = 3; j <= 7; j++){
 				if(j == 3 || j == 7 || i == 3){
-					map.set(blankTile, i, j);
+					map.set(new Tile(TileEnum.BLANK, tileSize, tileSize), i, j);
 				}
 			}
 		}

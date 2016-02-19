@@ -40,6 +40,9 @@ public class Tile {
 		case STONE_FLOOR:
 			createStoneTile();
 			break;
+		case GRASSY_MUD:
+			createGrassyMudTile();
+			break;
 //		case ACID:
 //			break;
 //		case ASH:
@@ -78,8 +81,9 @@ public class Tile {
 //			break;
 //		case ROOTS:
 //			break;
-//		case SAND:
-//			break;
+		case SAND:
+			createSandTile();
+			break;
 //		case SAPLING:
 //			break;
 //		case SMOKE:
@@ -178,6 +182,29 @@ public class Tile {
 		}
 	}
 	
+	void createGrassyMudTile(){
+		movement = 1.0f;
+		cover = 0.0f;
+		protection = 0.0f;
+		concealment = 0.0f;
+		damage = 0.0f;
+		flammability = 0.0f;
+		Random r = new Random();
+		currentX = r.nextInt(3);
+		currentY = 0;
+		pathable = true;
+		
+		try {
+			sprite = new SpriteSheet("Resources/grassyMud.png" , spriteSize, spriteSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		image = sprite.getSprite(currentX, currentY);
+		if(r.nextInt(2) == 1){
+			image = image.getFlippedCopy(true, false);
+		}
+	}
+	
 	void createDirtTile(){
 		movement = 1.0f;
 		cover = 0.0f;
@@ -185,9 +212,43 @@ public class Tile {
 		concealment = 0.0f;
 		damage = 0.0f;
 		flammability = 0.0f;
-		currentX = 0;
+		Random r = new Random();
+		currentX = r.nextInt(3);
 		currentY = 0;
 		pathable = true;
+		
+		try {
+			sprite = new SpriteSheet("Resources/dirt.png" , spriteSize, spriteSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		image = sprite.getSprite(currentX, currentY);
+		if(r.nextInt(2) == 1){
+			image = image.getFlippedCopy(true, false);
+		}
+	}
+	
+	void createSandTile(){
+		movement = 1.0f;
+		cover = 0.0f;
+		protection = 0.0f;
+		concealment = 0.0f;
+		damage = 0.0f;
+		flammability = 0.0f;
+		Random r = new Random();
+		currentX = r.nextInt(3);
+		currentY = 0;
+		pathable = true;
+		
+		try {
+			sprite = new SpriteSheet("Resources/sand.png" , spriteSize, spriteSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		image = sprite.getSprite(currentX, currentY);
+		if(r.nextInt(2) == 1){
+			image = image.getFlippedCopy(true, false);
+		}
 	}
 	
 	void createStoneTile(){
