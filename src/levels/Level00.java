@@ -1,5 +1,7 @@
 package levels;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,7 +17,7 @@ import utils.Region;
 import utils.Tile;
 import utils.TileEnum;
 import entities.Entity;
-import entities.Player;
+import entities.PCCharacter;
 import events.StateSwitchEvent;
 
 /**
@@ -29,11 +31,11 @@ public class Level00 extends Level{
 	Region testDialogueRegion, testEventRegion;
 	StateSwitchEvent testEvent;
 
-	public Level00(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight, int enterX, int enterY) {
-		super(gc, player, tileSize, spriteSize, levelWidth, levelHeight, enterX, enterY);
+	public Level00(GameContainer gc, ArrayList<PCCharacter> characters, int tileSize, int spriteSize, int levelWidth, int levelHeight, ArrayList<ArrayList<Integer>> enterCoords) {
+		super(gc, characters, tileSize, spriteSize, levelWidth, levelHeight, enterCoords);
 
 		background = new Rectangle(0, 0, levelWidth, levelHeight);
-		testEvent = new StateSwitchEvent(Driver.LEVEL_000);
+		testEvent = new StateSwitchEvent(Driver.LEVEL_0);
 		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green);
 		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.red, testEvent);
 	}
@@ -43,9 +45,6 @@ public class Level00 extends Level{
 		this.gc = gc;
 		this.sbg = sbg;
 		
-		player.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
-
-		world.add(player);
 		world.add(testDialogueRegion);
 		world.add(testEventRegion);
 
@@ -73,7 +72,7 @@ public class Level00 extends Level{
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.translate(-(player.getX() - gc.getWidth()/2), -(player.getY() - gc.getHeight()/2));
+		g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
 
 		g.setColor(Color.gray);
 		g.fill(background);
@@ -84,7 +83,7 @@ public class Level00 extends Level{
 
 		dialogue.draw(g);
 
-		g.translate((player.getX() - gc.getWidth()/2), (player.getY() - gc.getHeight()/2));
+		g.translate((currentCharacter.getX() - gc.getWidth()/2), (currentCharacter.getY() - gc.getHeight()/2));
 	}
 
 	@Override
@@ -100,14 +99,14 @@ public class Level00 extends Level{
 			}
 		}
 
-		dialogue.move(player.getX() - dialogue.getWidth(), player.getY() - dialogue.getHeight());
+		dialogue.move(currentCharacter.getX() - dialogue.getWidth(), currentCharacter.getY() - dialogue.getHeight());
 		
-		if(!testDialogueRegion.contains(player)){
+		if(!testDialogueRegion.contains(currentCharacter)){
 			dialogue.hide();
 		}
-		if(testEventRegion.contains(player))testEventRegion.doEvent(sbg);
+		if(testEventRegion.contains(currentCharacter))testEventRegion.doEvent(sbg);
 
-		updateLevelEssentials(mouseX, mouseY, delta);
+		updateLevelEssentials(mouseX, mouseY, delta, gc);
 	}
 
 	@Override
@@ -130,7 +129,7 @@ public class Level00 extends Level{
 				pauseMenu.hide();
 			}
 		}
-		if(testDialogueRegion.contains(player)){
+		if(testDialogueRegion.contains(currentCharacter)){
 			if(key == Input.KEY_SPACE){
 				if(!dialogue.showing()){
 					dialogue.show();

@@ -20,7 +20,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import entities.Door;
 import entities.Entity;
 import entities.Friendly;
-import entities.Player;
+import entities.PCCharacter;
 
 /**
  * This is a utility class used to save and load the game states
@@ -37,7 +37,7 @@ public class SaverLoader {
 	 * 
 	 * @return - success
 	 */
-	public static boolean saveGame(GameContainer gc, Level level, Player player, Checkpoint checkpoint, int levelID){
+	public static boolean saveGame(GameContainer gc, Level level, PCCharacter player, Checkpoint checkpoint, int levelID){
 		Date date = new Date();
 		ArrayList<Entity> entities = level.getEntities();
 
@@ -98,7 +98,7 @@ public class SaverLoader {
 	public static boolean loadGame(GameContainer gc, String path, StateBasedGame sbg){
 		String line;
 		String[] words;
-		Player player = null;
+		PCCharacter player = null;
 		float playerX = 0;
 		float playerY = 0;
 
@@ -121,8 +121,8 @@ public class SaverLoader {
 					}
 					levelID = Integer.parseInt(words[1]);
 					for(Entity e : level.getEntities()){
-						if(e instanceof Player){
-							player = (Player)e;
+						if(e instanceof PCCharacter){
+							player = (PCCharacter)e;
 						}
 					}
 				}

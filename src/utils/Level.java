@@ -16,6 +16,7 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
@@ -26,7 +27,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import driver.Driver;
 import entities.Entity;
-import entities.Player;
+import entities.PCCharacter;
 
 /**
  * A class that handles all level essentials
@@ -38,7 +39,11 @@ public abstract class Level extends BasicGameState{
 	protected StateBasedGame sbg;
 	protected boolean paused = false;
 	protected PauseMenu pauseMenu;
-	protected Player player;
+	
+	protected ArrayList<PCCharacter> characters;
+	
+	protected PCCharacter currentCharacter;
+	
 	protected Camera camera;
 	protected int mouseX, mouseY;
 	protected int levelWidth, levelHeight;
@@ -64,7 +69,11 @@ public abstract class Level extends BasicGameState{
 	int mapWidth, mapHeight;
 	protected int tileSize, spriteSize;
 	
-	int enterX, enterY;
+	protected int currentCharacterIndex = 0;
+	
+	int counter = 50;
+	
+	ArrayList<ArrayList<Integer>> enterCoords = new ArrayList<ArrayList<Integer>>();
 
 	/**
 	 * Constructor
@@ -74,10 +83,12 @@ public abstract class Level extends BasicGameState{
 	 * @param levelWidth - the width of the level
 	 * @param levelHeight - the height of the level
 	 */
-	public Level(GameContainer gc, Player player, int tileSize, int spriteSize, int levelWidth, int levelHeight, int enterX, int enterY){
+	public Level(GameContainer gc, ArrayList<PCCharacter> characters, int tileSize, int spriteSize, int levelWidth, int levelHeight, ArrayList<ArrayList<Integer>> enterCoords){
 		visibleCursor = Mouse.getNativeCursor();
 		
-		this.player = player;
+		this.characters = characters;
+		
+		currentCharacter = characters.get(currentCharacterIndex);
 		
 		//loading the font
 		try{
@@ -89,8 +100,7 @@ public abstract class Level extends BasicGameState{
 			e.printStackTrace();
 		}
 		
-		this.enterX = enterX;
-		this.enterY = enterY;
+		this.enterCoords = enterCoords;
 		
 		this.tileSize = tileSize;
 		this.spriteSize = spriteSize;
@@ -120,6 +130,11 @@ public abstract class Level extends BasicGameState{
 		optionsMenu = new InGameOptionsMenu(gc);
 
 		map = new TileMap(levelWidth, levelHeight, tileSize);
+		
+		for(PCCharacter c : characters){
+			world.add(c);
+			c.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
+		}
 	}
 
 	@Override
@@ -153,32 +168,38 @@ public abstract class Level extends BasicGameState{
 		quit = false;
 		newGame = false;
 		
-		if(player.isWalking()){
-			player.setWalking(false);
-			switch(player.getDirection()){
+		currentCharacter = characters.get(currentCharacterIndex);
+		
+		if(currentCharacter.isWalking()){
+			currentCharacter.setWalking(false);
+			switch(currentCharacter.getDirection()){
 			case EAST:
 				//player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
-				player.setDirection(Direction.WEST);
+				currentCharacter.setDirection(Direction.WEST);
 				break;
 			case NORTH:
 				//player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
-				player.setDirection(Direction.SOUTH);
+				currentCharacter.setDirection(Direction.SOUTH);
 				break;
 			case SOUTH:
 				//player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
-				player.setDirection(Direction.NORTH);
+				currentCharacter.setDirection(Direction.NORTH);
 				break;
 			case WEST:
 				//player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
-				player.setDirection(Direction.EAST);
+				currentCharacter.setDirection(Direction.EAST);
 				break;
 			}
 		}
 		
-		player.setXCoord(enterX);
-		player.setYCoord(enterY);
+		System.out.printf("characters.size(): %d\n", characters.size());
+		System.out.printf("enterCoords.size(): %d\n", enterCoords.size());
 		
-		System.out.println("Entering state: " + sbg.getCurrentStateID());
+		for(PCCharacter c : characters){
+			ArrayList<Integer> temp = enterCoords.get(characters.indexOf(c));
+			c.setXCoord(temp.get(0));
+			c.setXCoord(temp.get(1));
+		}
 	}
 
 	@Override
@@ -188,8 +209,11 @@ public abstract class Level extends BasicGameState{
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-		enterX = player.getXCoord();
-		enterY = player.getYCoord();
+		
+		for(PCCharacter c : characters){
+			enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord());
+			enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord());
+		}
 	}
 
 	/**
@@ -322,14 +346,31 @@ public abstract class Level extends BasicGameState{
 	 * 
 	 * @param delta - time since the last frame
 	 */
-	protected void updateLevelEssentials(int mouseX, int mouseY, int delta){
+	protected void updateLevelEssentials(int mouseX, int mouseY, int delta, GameContainer gc){
+		
+		if(gc.getInput().isKeyDown(Input.KEY_TAB) && counter >= 50){
+			currentCharacterIndex++;
+			currentCharacterIndex %= characters.size();
+			
+			for(PCCharacter c : characters){
+				c.setActive(false);
+			}
+			
+			counter = 0;
+		}else{
+			counter++;
+		}
+		
+		currentCharacter = characters.get(currentCharacterIndex);
+		currentCharacter.setActive(true);
+		
 		//if the player leaves the level bounds, it dies
-		if(player.getY() > levelHeight || player.getX() > levelWidth){
-			player.kill();
+		if(currentCharacter.getY() > levelHeight || currentCharacter.getX() > levelWidth){
+			currentCharacter.kill();
 		}
 
 		//if player is dead, reload the most recent save
-		if(player.isDead()){
+		if(currentCharacter.isDead()){
 			
 			File folder = new File("savedGames/");
 			File[] listOfFiles = folder.listFiles();
@@ -340,10 +381,10 @@ public abstract class Level extends BasicGameState{
 					SaverLoader.loadGame(gc, "savedGames/" + listOfFiles[listOfFiles.length - 1].getName(), sbg);
 				}
 			}
-			player.revive();
+			currentCharacter.revive();
 		}
 		if(!paused){
-			player.getInventory().update(gc, delta);
+			currentCharacter.getInventory().update(gc, delta);
 		}
 
 		if(	!warning.isShowing() && 
@@ -362,7 +403,7 @@ public abstract class Level extends BasicGameState{
 			c.collide(gc);
 		}
 
-		player.getInventory().move(camera.getX(), camera.getY());
+		currentCharacter.getInventory().move(camera.getX(), camera.getY());
 
 		loadMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
 		optionsMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
@@ -374,7 +415,7 @@ public abstract class Level extends BasicGameState{
 	 * @param g - the Graphics context
 	 */
 	protected void drawLevelEssentials(Graphics g){
-		camera.update(gc, g, player);
+		camera.update(gc, g, currentCharacter);
 
 		for(Entity e : world){
 			e.draw(g);
@@ -384,8 +425,8 @@ public abstract class Level extends BasicGameState{
 			c.draw(g);
 		}
 
-		if(player.getInventory() != null){
-			player.getInventory().draw(g);
+		if(currentCharacter.getInventory() != null){
+			currentCharacter.getInventory().draw(g);
 		}
 
 		pauseMenu.draw(g, font);

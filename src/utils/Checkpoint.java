@@ -5,7 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Shape;
 
-import entities.Player;
+import entities.PCCharacter;
 
 /**
  * This class represents a checkpoint that the player must cross in order for the game to save
@@ -13,7 +13,7 @@ import entities.Player;
 public class Checkpoint {
 
 	Shape boundingBox;
-	Player player;
+	PCCharacter player;
 	boolean saved = false;
 	int levelID;
 	Level level;
@@ -24,7 +24,7 @@ public class Checkpoint {
 	 * @param boundingBox - the area that the player must enter for the game to be saved
 	 * @param target - the player
 	 */
-	public Checkpoint(Level level, Shape boundingBox, Player player, int levelID){
+	public Checkpoint(Level level, Shape boundingBox, PCCharacter player, int levelID){
 		this.level = level;
 		this.boundingBox = boundingBox;
 		this.player = player;

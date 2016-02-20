@@ -2,7 +2,6 @@ package driver;
 
 import levels.Level0;
 import levels.Level00;
-import levels.Level000;
 import menuScreens.LoadMenu;
 import menuScreens.MainMenu;
 import menuScreens.OptionsMenu;
@@ -10,13 +9,15 @@ import menuScreens.ResolutionsMenu;
 import menuScreens.SoundMenu;
 import menuScreens.VideoOptionsMenu;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import entities.Player;
+import entities.PCCharacter;
 import utils.SaverLoader;
 
 /**
@@ -36,7 +37,6 @@ public class Driver extends StateBasedGame{
 	public static final int LOAD_GAME				= 5;
 	public static final int LEVEL_0					= 6;
 	public static final int LEVEL_00				= 7;
-	public static final int LEVEL_000				= 8;
 
 	/**
 	 * Constructor
@@ -65,6 +65,7 @@ public class Driver extends StateBasedGame{
 	 * 
 	 * Used to initialize all of the other screens in the game
 	 */
+	@SuppressWarnings("serial")
 	public void initStatesList(GameContainer gc) throws SlickException {
 		MainMenu mainMenu = new MainMenu();
 		addState(mainMenu);
@@ -76,11 +77,24 @@ public class Driver extends StateBasedGame{
 
 		int tileSize = 50;
 		int spriteSize = 60;
-		Player player = new Player(tileSize);
+		PCCharacter testCharacter1 = new PCCharacter(tileSize);
+		PCCharacter testCharacter2 = new PCCharacter(tileSize);
 		
-		addState(new Level0(gc, player, tileSize, spriteSize, 15, 15, 5, 5));
-		addState(new Level00(gc, player, tileSize, spriteSize, 10, 8, 2, 2));
-		addState(new Level000(gc, player, tileSize, spriteSize, 5, 5, 1, 1));
+		ArrayList<PCCharacter> testCharacters = new ArrayList<PCCharacter>();
+		
+		testCharacters.add(testCharacter1);
+		testCharacters.add(testCharacter2);
+		
+		ArrayList<ArrayList<Integer>> level0EnterCoords = new ArrayList<ArrayList<Integer>>();
+		level0EnterCoords.add(new ArrayList<Integer>(){{add(5); add(5);}});
+		level0EnterCoords.add(new ArrayList<Integer>(){{add(7); add(7);}});
+		
+		ArrayList<ArrayList<Integer>> level00EnterCoords = new ArrayList<ArrayList<Integer>>();
+		level00EnterCoords.add(new ArrayList<Integer>(){{add(2); add(3);}});
+		level00EnterCoords.add(new ArrayList<Integer>(){{add(4); add(5);}});
+		
+		addState(new Level0(gc, testCharacters, tileSize, spriteSize, 15, 15, level0EnterCoords));
+		addState(new Level00(gc, testCharacters, tileSize, spriteSize, 10, 8, level00EnterCoords));
 
 		enterState(MAIN_MENU); 
 	}

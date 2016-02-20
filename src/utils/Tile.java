@@ -258,9 +258,20 @@ public class Tile {
 		concealment = 0.0f;
 		damage = 0.0f;
 		flammability = 0.0f;
-		currentX = 0;
+		Random r = new Random();
+		currentX = r.nextInt(3);
 		currentY = 0;
 		pathable = true;
+		
+		try {
+			sprite = new SpriteSheet("Resources/stoneFloor.png" , spriteSize, spriteSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		image = sprite.getSprite(currentX, currentY);
+		if(r.nextInt(2) == 1){
+			image = image.getFlippedCopy(true, false);
+		}
 	}
 	
 	public void draw(Graphics g, int i, int j){

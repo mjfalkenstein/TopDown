@@ -16,7 +16,7 @@ import entities.Entity;
 /**
  * The player as it is represented on the screen
  */
-public class Player extends Entity {
+public class PCCharacter extends Entity {
 
 	Inventory inventory;
 	boolean dead = false;
@@ -24,6 +24,7 @@ public class Player extends Entity {
 	Image image;
 	Direction spriteDirection = Direction.NORTH;
 	int speed = 1;
+	boolean active = false;
 
 	int xCoord, yCoord;
 
@@ -33,14 +34,15 @@ public class Player extends Entity {
 	 * @param boundingBox - a Rectangle representing the borders of the Platform
 	 * @param velocity - the initial velocity
 	 */
-	public Player(float size) {
+	public PCCharacter(float size) {
 		super(0, 0, size, size);
 		inventory = new Inventory(new ArrayList<Item>());
 	}
 
 	@Override
 	public void update(GameContainer gc, int delta, TileMap map) {
-		handleInputs(gc, map);
+		if(active)
+			handleInputs(gc, map);
 		
 		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
 			x -= x % 2;
@@ -277,5 +279,13 @@ public class Player extends Entity {
 	public void setYCoord(int y){
 		yCoord = y;
 		this.y = y * width;
+	}
+	
+	public boolean getActive(){
+		return active;
+	}
+	
+	public void setActive(boolean b){
+		active = b;
 	}
 }
