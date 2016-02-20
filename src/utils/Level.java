@@ -69,7 +69,7 @@ public abstract class Level extends BasicGameState{
 	int mapWidth, mapHeight;
 	protected int tileSize, spriteSize;
 
-	protected int currentCharacterIndex = 0;
+	protected static int currentCharacterIndex = 0;
 
 	int counter = 50;
 
@@ -199,19 +199,11 @@ public abstract class Level extends BasicGameState{
 			}
 		}
 
-		System.out.printf("characters.size(): %d\n", characters.size());
-		System.out.printf("enterCoords.size(): %d\n", enterCoords.size());
-
 		for(PCCharacter c : characters){
 			ArrayList<Integer> temp = enterCoords.get(characters.indexOf(c));
 			c.setXCoord(temp.get(0));
 			c.setYCoord(temp.get(1));
 		}
-
-		for(ArrayList<Integer> list : enterCoords){
-			System.out.printf("Enter coord: %d, %d\n", list.get(0), list.get(1));
-		}
-		System.out.printf("currentCharacter: %d, %d\n", currentCharacter.getXCoord(), currentCharacter.getYCoord());
 	}
 
 	@Override
@@ -223,8 +215,29 @@ public abstract class Level extends BasicGameState{
 		}
 
 		for(PCCharacter c : characters){
-			enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord());
-			enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord());
+			if(!c.isWalking()){
+				enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord());
+				enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord());
+			}else{
+				switch(c.getDirection()){
+				case EAST:
+					enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord()-1);
+					enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord()+0);
+					break;
+				case NORTH:
+					enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord()+0);
+					enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord()+1);
+					break;
+				case SOUTH:
+					enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord()+0);
+					enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord()-1);
+					break;
+				case WEST:
+					enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord()+1);
+					enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord()+0);
+					break;
+				}
+			}
 		}
 	}
 

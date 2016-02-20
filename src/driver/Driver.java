@@ -87,7 +87,7 @@ public class Driver extends StateBasedGame{
 		
 		ArrayList<ArrayList<Integer>> level0EnterCoords = new ArrayList<ArrayList<Integer>>();
 		level0EnterCoords.add(new ArrayList<Integer>(){{add(5); add(5);}});
-		level0EnterCoords.add(new ArrayList<Integer>(){{add(7); add(7);}});
+		level0EnterCoords.add(new ArrayList<Integer>(){{add(7); add(8);}});
 		
 		ArrayList<ArrayList<Integer>> level00EnterCoords = new ArrayList<ArrayList<Integer>>();
 		level00EnterCoords.add(new ArrayList<Integer>(){{add(2); add(3);}});
