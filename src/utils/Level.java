@@ -39,18 +39,18 @@ public abstract class Level extends BasicGameState{
 	protected StateBasedGame sbg;
 	protected boolean paused = false;
 	protected PauseMenu pauseMenu;
-	
+
 	protected ArrayList<PCCharacter> characters;
-	
+
 	protected PCCharacter currentCharacter;
-	
+
 	protected Camera camera;
 	protected int mouseX, mouseY;
 	protected int levelWidth, levelHeight;
 	int buttonWidth, buttonHeight, buttonXOffset, buttonYOffset, buttonXGap, buttonYGap;
 	protected Notification warning;
 	protected SimpleButton b1, b2;
-	
+
 	protected InGameLoadMenu loadMenu; 
 	protected InGameOptionsMenu optionsMenu;
 
@@ -64,15 +64,15 @@ public abstract class Level extends BasicGameState{
 	TrueTypeFont font;
 	float fontSize = 12f;
 	private Cursor emptyCursor, visibleCursor;
-	
+
 	protected TileMap map;
 	int mapWidth, mapHeight;
 	protected int tileSize, spriteSize;
-	
+
 	protected int currentCharacterIndex = 0;
-	
+
 	int counter = 50;
-	
+
 	ArrayList<ArrayList<Integer>> enterCoords = new ArrayList<ArrayList<Integer>>();
 
 	/**
@@ -85,11 +85,16 @@ public abstract class Level extends BasicGameState{
 	 */
 	public Level(GameContainer gc, ArrayList<PCCharacter> characters, int tileSize, int spriteSize, int levelWidth, int levelHeight, ArrayList<ArrayList<Integer>> enterCoords){
 		visibleCursor = Mouse.getNativeCursor();
-		
+
 		this.characters = characters;
 		
+		for(PCCharacter c : characters){
+			c.setActive(false);
+		}
+
 		currentCharacter = characters.get(currentCharacterIndex);
-		
+		currentCharacter.setActive(true);
+
 		//loading the font
 		try{
 			InputStream is = ResourceLoader.getResourceAsStream("Resources/HappyKiller.ttf");
@@ -99,12 +104,12 @@ public abstract class Level extends BasicGameState{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		this.enterCoords = enterCoords;
-		
+
 		this.tileSize = tileSize;
 		this.spriteSize = spriteSize;
-		
+
 		this.levelWidth = levelWidth * tileSize;
 		this.levelHeight = levelHeight * tileSize;
 		Color background = Color.black;
@@ -130,7 +135,7 @@ public abstract class Level extends BasicGameState{
 		optionsMenu = new InGameOptionsMenu(gc);
 
 		map = new TileMap(levelWidth, levelHeight, tileSize);
-		
+
 		for(PCCharacter c : characters){
 			world.add(c);
 			c.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
@@ -167,39 +172,46 @@ public abstract class Level extends BasicGameState{
 		goToMainMenu = false;
 		quit = false;
 		newGame = false;
-		
+
 		currentCharacter = characters.get(currentCharacterIndex);
 		
-		if(currentCharacter.isWalking()){
-			currentCharacter.setWalking(false);
-			switch(currentCharacter.getDirection()){
-			case EAST:
-				//player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
-				currentCharacter.setDirection(Direction.WEST);
-				break;
-			case NORTH:
-				//player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
-				currentCharacter.setDirection(Direction.SOUTH);
-				break;
-			case SOUTH:
-				//player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
-				currentCharacter.setDirection(Direction.NORTH);
-				break;
-			case WEST:
-				//player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
-				currentCharacter.setDirection(Direction.EAST);
-				break;
+		for(PCCharacter c : characters){
+			if(c.isWalking()){
+				c.setWalking(false);
+				switch(c.getDirection()){
+				case EAST:
+					//player.move((player.getXCoord() - 0) * tileSize, player.getYCoord() * tileSize);
+					c.setDirection(Direction.WEST);
+					break;
+				case NORTH:
+					//player.move(player.getXCoord() * tileSize, (player.getYCoord() + 1) * tileSize);
+					c.setDirection(Direction.SOUTH);
+					break;
+				case SOUTH:
+					//player.move(player.getXCoord() * tileSize, (player.getYCoord() - 0) * tileSize);
+					c.setDirection(Direction.NORTH);
+					break;
+				case WEST:
+					//player.move((player.getXCoord() + 1) * tileSize, player.getYCoord() * tileSize);
+					c.setDirection(Direction.EAST);
+					break;
+				}
 			}
 		}
-		
+
 		System.out.printf("characters.size(): %d\n", characters.size());
 		System.out.printf("enterCoords.size(): %d\n", enterCoords.size());
-		
+
 		for(PCCharacter c : characters){
 			ArrayList<Integer> temp = enterCoords.get(characters.indexOf(c));
 			c.setXCoord(temp.get(0));
-			c.setXCoord(temp.get(1));
+			c.setYCoord(temp.get(1));
 		}
+
+		for(ArrayList<Integer> list : enterCoords){
+			System.out.printf("Enter coord: %d, %d\n", list.get(0), list.get(1));
+		}
+		System.out.printf("currentCharacter: %d, %d\n", currentCharacter.getXCoord(), currentCharacter.getYCoord());
 	}
 
 	@Override
@@ -209,7 +221,7 @@ public abstract class Level extends BasicGameState{
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-		
+
 		for(PCCharacter c : characters){
 			enterCoords.get(characters.indexOf(c)).set(0, c.getXCoord());
 			enterCoords.get(characters.indexOf(c)).set(1, c.getYCoord());
@@ -274,9 +286,9 @@ public abstract class Level extends BasicGameState{
 
 		if(button == 0){
 			if(paused && 
-			   !warning.isShowing() && 
-			   !loadMenu.isShowing() && 
-			   !optionsMenu.isShowing()){
+					!warning.isShowing() && 
+					!loadMenu.isShowing() && 
+					!optionsMenu.isShowing()){
 				if(pauseMenuSelection == "continue"){
 					unpause();
 					pauseMenu.hide();
@@ -347,23 +359,23 @@ public abstract class Level extends BasicGameState{
 	 * @param delta - time since the last frame
 	 */
 	protected void updateLevelEssentials(int mouseX, int mouseY, int delta, GameContainer gc){
-		
+
 		if(gc.getInput().isKeyDown(Input.KEY_TAB) && counter >= 50){
 			currentCharacterIndex++;
 			currentCharacterIndex %= characters.size();
-			
+
 			for(PCCharacter c : characters){
 				c.setActive(false);
 			}
-			
+
 			counter = 0;
 		}else{
 			counter++;
 		}
-		
+
 		currentCharacter = characters.get(currentCharacterIndex);
 		currentCharacter.setActive(true);
-		
+
 		//if the player leaves the level bounds, it dies
 		if(currentCharacter.getY() > levelHeight || currentCharacter.getX() > levelWidth){
 			currentCharacter.kill();
@@ -371,11 +383,11 @@ public abstract class Level extends BasicGameState{
 
 		//if player is dead, reload the most recent save
 		if(currentCharacter.isDead()){
-			
+
 			File folder = new File("savedGames/");
 			File[] listOfFiles = folder.listFiles();
 			Arrays.sort(listOfFiles);
-			
+
 			if(listOfFiles.length > 0){
 				if(listOfFiles[listOfFiles.length - 1].getName().contains(".sav")){
 					SaverLoader.loadGame(gc, "savedGames/" + listOfFiles[listOfFiles.length - 1].getName(), sbg);
@@ -388,8 +400,8 @@ public abstract class Level extends BasicGameState{
 		}
 
 		if(	!warning.isShowing() && 
-			!loadMenu.isShowing() && 
-			!optionsMenu.isShowing()){
+				!loadMenu.isShowing() && 
+				!optionsMenu.isShowing()){
 
 			pauseMenu.hover(mouseX, mouseY);
 		}
