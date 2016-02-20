@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 import utils.Direction;
 import utils.Inventory;
@@ -25,6 +26,7 @@ public class PCCharacter extends Entity {
 	Direction spriteDirection = Direction.NORTH;
 	int speed = 1;
 	boolean active = false;
+	Image portrait;
 
 	int xCoord, yCoord;
 
@@ -34,9 +36,14 @@ public class PCCharacter extends Entity {
 	 * @param boundingBox - a Rectangle representing the borders of the Platform
 	 * @param velocity - the initial velocity
 	 */
-	public PCCharacter(float size) {
+	public PCCharacter(float size, String portraitPath) {
 		super(0, 0, size, size);
 		inventory = new Inventory(new ArrayList<Item>());
+		try {
+			portrait = new Image(portraitPath);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -287,5 +294,9 @@ public class PCCharacter extends Entity {
 	
 	public void setActive(boolean b){
 		active = b;
+	}
+	
+	public Image getPortrait(){
+		return portrait;
 	}
 }

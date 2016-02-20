@@ -19,6 +19,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -460,6 +461,17 @@ public abstract class Level extends BasicGameState{
 		warning.move(gc.getWidth()/2 - warning.getWidth()/2, gc.getHeight()/2 - warning.getHeight()/2);
 		b1.hover(mouseX, mouseY);
 		b2.hover(mouseX, mouseY);
+		
+		int counter = 0;
+		for(PCCharacter c : characters){
+			g.drawImage(c.getPortrait(), camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 10 + 10 * counter);
+			if(c.getActive()){
+				g.setColor(Color.green);
+				g.setLineWidth(3);
+				g.draw(new Rectangle(camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 10 + 10 * counter, c.getPortrait().getWidth(), c.getPortrait().getHeight()));
+			}
+			counter++;
+		}
 
 		loadMenu.draw(g, font);
 		optionsMenu.draw(g, font);

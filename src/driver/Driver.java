@@ -77,8 +77,8 @@ public class Driver extends StateBasedGame{
 
 		int tileSize = 50;
 		int spriteSize = 60;
-		PCCharacter testCharacter1 = new PCCharacter(tileSize);
-		PCCharacter testCharacter2 = new PCCharacter(tileSize);
+		PCCharacter testCharacter1 = new PCCharacter(tileSize, "Resources/portraitTemplate.png");
+		PCCharacter testCharacter2 = new PCCharacter(tileSize, "Resources/portraitTemplate.png");
 		
 		ArrayList<PCCharacter> testCharacters = new ArrayList<PCCharacter>();
 		
