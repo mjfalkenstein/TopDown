@@ -30,6 +30,7 @@ import driver.Driver;
 import entities.Entity;
 import entities.PCCharacter;
 import events.DialogueEvent;
+import events.EnterBattleEvent;
 import events.Event;
 import events.EventType;
 
@@ -385,6 +386,8 @@ public abstract class Level extends BasicGameState{
 	 */
 	protected void updateLevelEssentials(int delta, GameContainer gc){
 		
+		System.out.println(inBattle);
+		
 		int mouseX = gc.getInput().getMouseX() + camera.getX();
 		int mouseY = gc.getInput().getMouseY() + camera.getY();
 		
@@ -459,14 +462,13 @@ public abstract class Level extends BasicGameState{
 						d.hide();
 					}
 				}
-			}
-			if(r.contains(currentCharacter)){
-				r.doEvent(sbg, camera);
-				if(r.getEvent() != null){
-					if(r.getEvent().getType() == EventType.BATTLE){
-						inBattle = true;
-					}
+				if(e.getType() == EventType.BATTLE){
+					EnterBattleEvent d = (EnterBattleEvent)e;
+					d.act(sbg, camera);
 				}
+			}
+			if(r.getEvent().getType() == EventType.BATTLE){
+				inBattle = r.contains(currentCharacter);
 			}
 		}
 
@@ -482,7 +484,14 @@ public abstract class Level extends BasicGameState{
 	 * @param g - the Graphics context
 	 */
 	protected void drawLevelEssentials(Graphics g){
-		g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
+		if(!inBattle){
+			g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
+			camera.move(currentCharacter.getX() - gc.getWidth()/2, currentCharacter.getY() - gc.getHeight()/2);
+			camera.enable();
+		}else{
+			g.translate(-camera.getX(), -camera.getY());
+			camera.disable();
+		}
 
 		g.setBackground(Color.gray);
 
@@ -492,7 +501,9 @@ public abstract class Level extends BasicGameState{
 			r.draw(g);
 		}
 
-		camera.update(gc, g, currentCharacter);
+		if(!inBattle){
+			camera.update(gc, g, currentCharacter);
+		}
 
 		for(Entity e : world){
 			e.draw(g);
@@ -537,7 +548,12 @@ public abstract class Level extends BasicGameState{
 		loadMenu.draw(g, font);
 		optionsMenu.draw(g, font);
 
-		g.translate((currentCharacter.getX() - gc.getWidth()/2), (currentCharacter.getY() - gc.getHeight()/2));
+		if(!inBattle){
+			g.translate((currentCharacter.getX() - gc.getWidth()/2), (currentCharacter.getY() - gc.getHeight()/2));
+		}
+		else{
+			g.translate(camera.getX(), camera.getY());
+		}
 	}
 
 	public void handleKeyRelease(int key, char c){

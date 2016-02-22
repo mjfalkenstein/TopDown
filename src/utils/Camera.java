@@ -62,4 +62,8 @@ public class Camera {
 	public void disable(){
 		follow = false;
 	}
+
+	public boolean isActive() {
+		return follow;
+	}
 }

@@ -34,7 +34,7 @@ public class Level0 extends Level{
 		dialogue = new Dialogue(0, 0, message, Color.white, Color.black);
 		
 		testStateSwitchEvent = new StateSwitchEvent(Driver.MAIN_MENU);
-		testBattleEvent = new EnterBattleEvent(currentCharacter, map);
+		testBattleEvent = new EnterBattleEvent(map);
 		testDialogueEvent = new DialogueEvent(dialogue);
 		
 		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green, testDialogueEvent);
