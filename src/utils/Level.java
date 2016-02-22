@@ -29,6 +29,9 @@ import org.newdawn.slick.util.ResourceLoader;
 import driver.Driver;
 import entities.Entity;
 import entities.PCCharacter;
+import events.DialogueEvent;
+import events.Event;
+import events.EventType;
 
 /**
  * A class that handles all level essentials
@@ -76,6 +79,11 @@ public abstract class Level extends BasicGameState{
 
 	ArrayList<ArrayList<Integer>> enterCoords = new ArrayList<ArrayList<Integer>>();
 
+	protected ArrayList<Region> regions = new ArrayList<Region>();
+	protected ArrayList<Dialogue> dialogues = new ArrayList<Dialogue>();
+
+	boolean inBattle = false;
+
 	/**
 	 * Constructor
 	 * 
@@ -88,7 +96,7 @@ public abstract class Level extends BasicGameState{
 		visibleCursor = Mouse.getNativeCursor();
 
 		this.characters = characters;
-		
+
 		for(PCCharacter c : characters){
 			c.setActive(false);
 		}
@@ -113,7 +121,7 @@ public abstract class Level extends BasicGameState{
 
 		this.levelWidth = levelWidth * tileSize;
 		this.levelHeight = levelHeight * tileSize;
-		Color background = Color.black;
+		Color menuBackgroundColor = Color.black;
 		Color textColor = Color.lightGray;
 
 		buttonWidth = 220;
@@ -125,7 +133,7 @@ public abstract class Level extends BasicGameState{
 
 		b1 = new SimpleButton(0, 0, buttonWidth, buttonHeight, "Confirm");
 		b2 = new SimpleButton(0, 0, buttonWidth, buttonHeight, "Cancel");
-		warning = new Notification(0, 0, gc.getWidth()/3, gc.getHeight()/3, background, textColor, b1, b2, buttonYGap, "Start New Game","Are you sure you want to start a new game? Unsaved progress will be lost.");
+		warning = new Notification(0, 0, gc.getWidth()/3, gc.getHeight()/3, menuBackgroundColor, textColor, b1, b2, buttonYGap, "Start New Game","Are you sure you want to start a new game? Unsaved progress will be lost.");
 
 		camera = new Camera(gc, levelWidth * tileSize, levelHeight * tileSize);
 
@@ -175,7 +183,7 @@ public abstract class Level extends BasicGameState{
 		newGame = false;
 
 		currentCharacter = characters.get(currentCharacterIndex);
-		
+
 		for(PCCharacter c : characters){
 			if(c.isWalking()){
 				c.setWalking(false);
@@ -295,6 +303,9 @@ public abstract class Level extends BasicGameState{
 	 * @param y - the y coordinate of the mouse
 	 */
 	protected void handlePauseMenuInputs(int button, int x, int y){
+		
+		x += camera.getX();
+		y += camera.getY();
 
 		String pauseMenuSelection = pauseMenu.handleMouseInput(x, y);
 
@@ -372,7 +383,16 @@ public abstract class Level extends BasicGameState{
 	 * 
 	 * @param delta - time since the last frame
 	 */
-	protected void updateLevelEssentials(int mouseX, int mouseY, int delta, GameContainer gc){
+	protected void updateLevelEssentials(int delta, GameContainer gc){
+		
+		int mouseX = gc.getInput().getMouseX() + camera.getX();
+		int mouseY = gc.getInput().getMouseY() + camera.getY();
+		
+		if(!paused){
+			for(Entity e : world){
+				e.update(gc, delta, map);
+			}
+		}
 
 		if(gc.getInput().isKeyDown(Input.KEY_TAB) && counter >= 50){
 			currentCharacterIndex++;
@@ -429,6 +449,27 @@ public abstract class Level extends BasicGameState{
 			c.collide(gc);
 		}
 
+		for(Region r : regions){
+			Event e = r.getEvent();
+			if(e != null){
+				if(e.getType() == EventType.DIALOGUE){
+					Dialogue d = ((DialogueEvent)e).getDialogue();
+					d.move(currentCharacter.getX() - d.getWidth(), currentCharacter.getY() - d.getHeight());
+					if(!r.contains(currentCharacter)){
+						d.hide();
+					}
+				}
+			}
+			if(r.contains(currentCharacter)){
+				r.doEvent(sbg, camera);
+				if(r.getEvent() != null){
+					if(r.getEvent().getType() == EventType.BATTLE){
+						inBattle = true;
+					}
+				}
+			}
+		}
+
 		currentCharacter.getInventory().move(camera.getX(), camera.getY());
 
 		loadMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
@@ -441,6 +482,16 @@ public abstract class Level extends BasicGameState{
 	 * @param g - the Graphics context
 	 */
 	protected void drawLevelEssentials(Graphics g){
+		g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
+
+		g.setBackground(Color.gray);
+
+		map.draw(g);
+
+		for(Region r : regions){
+			r.draw(g);
+		}
+
 		camera.update(gc, g, currentCharacter);
 
 		for(Entity e : world){
@@ -454,6 +505,16 @@ public abstract class Level extends BasicGameState{
 		if(currentCharacter.getInventory() != null){
 			currentCharacter.getInventory().draw(g);
 		}
+		
+		for(Region r : regions){
+			Event e = r.getEvent();
+			if(e != null){
+				if(e.getType() == EventType.DIALOGUE){
+					Dialogue d = ((DialogueEvent)e).getDialogue();
+					d.draw(g);
+				}
+			}
+		}
 
 		pauseMenu.draw(g, font);
 
@@ -461,20 +522,49 @@ public abstract class Level extends BasicGameState{
 		warning.move(gc.getWidth()/2 - warning.getWidth()/2, gc.getHeight()/2 - warning.getHeight()/2);
 		b1.hover(mouseX, mouseY);
 		b2.hover(mouseX, mouseY);
-		
+
 		int counter = 0;
 		for(PCCharacter c : characters){
-			g.drawImage(c.getPortrait(), camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 10 + 10 * counter);
+			g.drawImage(c.getPortrait(), camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 20 + 20 * counter);
 			if(c.getActive()){
 				g.setColor(Color.green);
 				g.setLineWidth(3);
-				g.draw(new Rectangle(camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 10 + 10 * counter, c.getPortrait().getWidth(), c.getPortrait().getHeight()));
+				g.draw(new Rectangle(camera.getX() + 10, camera.getY() + counter * c.getPortrait().getHeight() + 20 + 20 * counter, c.getPortrait().getWidth(), c.getPortrait().getHeight()));
 			}
 			counter++;
 		}
 
 		loadMenu.draw(g, font);
 		optionsMenu.draw(g, font);
+
+		g.translate((currentCharacter.getX() - gc.getWidth()/2), (currentCharacter.getY() - gc.getHeight()/2));
+	}
+
+	public void handleKeyRelease(int key, char c){
+		if(key == Input.KEY_ESCAPE){
+			if(!paused){
+				pause();
+				pauseMenu.show();
+			}else{
+				unpause();
+				pauseMenu.hide();
+			}
+		}
+		if(key == Input.KEY_SPACE){
+			for(Region r : regions){
+				Event e = r.getEvent();
+				if(e != null){
+					if(e.getType() == EventType.DIALOGUE){
+						Dialogue d = ((DialogueEvent) e).getDialogue();
+						if(!d.showing()){
+							d.show();
+						}else{
+							d.advance();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**

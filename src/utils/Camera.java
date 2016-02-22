@@ -11,6 +11,7 @@ public class Camera {
 	int dX, dY;
 	int levelWidth, levelHeight;
 	Rectangle view;
+	boolean follow = true;
 
 	/**
 	 * Constructor
@@ -35,16 +36,30 @@ public class Camera {
 	 * @param e - the Entity to follow
 	 */
 	public void update(GameContainer gc, Graphics g, Entity e) {
-		view.setX((e.getX() - gc.getWidth()/2));
-		view.setY((e.getY() - gc.getHeight()/2));
+		if(follow){
+			view.setX((e.getX() - gc.getWidth()/2));
+			view.setY((e.getY() - gc.getHeight()/2));
+		}
 	}
 	
+	public void move(float x, float y){
+		view.setX(x);
+		view.setY(y);
+	}
+
 	public int getX(){
 		return (int) view.getX();
 	}
-	
+
 	public int getY(){
 		return (int) view.getY();
 	}
+
+	public void enable(){
+		follow = true;
+	}
 	
+	public void disable(){
+		follow = false;
+	}
 }

@@ -56,9 +56,9 @@ public class Region extends Entity {
 		g.fill(highlight);
 	}
 	
-	public void doEvent(StateBasedGame sbg){
+	public void doEvent(StateBasedGame sbg, Camera camera){
 		if(event != null)
-			event.act(sbg);
+			event.act(sbg, camera);
 	}
 	
 	public boolean contains(Entity e){
@@ -68,6 +68,13 @@ public class Region extends Entity {
 	@Override
 	public void reset() {
 		//also shouldn't need to do anything
+	}
+	
+	public Event getEvent(){
+		if(event != null){
+			return event;
+		}
+		return null;
 	}
 
 }

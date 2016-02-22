@@ -1,7 +1,6 @@
 package driver;
 
 import levels.Level0;
-import levels.Level00;
 import menuScreens.LoadMenu;
 import menuScreens.MainMenu;
 import menuScreens.OptionsMenu;
@@ -36,7 +35,6 @@ public class Driver extends StateBasedGame{
 	public static final int SOUND_MENU 				= 4;
 	public static final int LOAD_GAME				= 5;
 	public static final int LEVEL_0					= 6;
-	public static final int LEVEL_00				= 7;
 
 	/**
 	 * Constructor
@@ -89,12 +87,7 @@ public class Driver extends StateBasedGame{
 		level0EnterCoords.add(new ArrayList<Integer>(){{add(5); add(5);}});
 		level0EnterCoords.add(new ArrayList<Integer>(){{add(7); add(8);}});
 		
-		ArrayList<ArrayList<Integer>> level00EnterCoords = new ArrayList<ArrayList<Integer>>();
-		level00EnterCoords.add(new ArrayList<Integer>(){{add(2); add(3);}});
-		level00EnterCoords.add(new ArrayList<Integer>(){{add(4); add(5);}});
-		
 		addState(new Level0(gc, testCharacters, tileSize, spriteSize, 15, 15, level0EnterCoords));
-		addState(new Level00(gc, testCharacters, tileSize, spriteSize, 10, 8, level00EnterCoords));
 
 		enterState(MAIN_MENU); 
 	}
