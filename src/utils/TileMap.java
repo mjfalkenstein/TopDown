@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import org.newdawn.slick.Graphics;
 
@@ -25,6 +26,7 @@ public class TileMap {
 		for(int i = 0; i < width; i++){
 			for(int j = 0; j < height; j++){
 				tiles.get(i).add(j, blankTile);
+				tiles.get(i).get(j).setCoords(i, j);
 			}
 		}
 		
@@ -35,11 +37,14 @@ public class TileMap {
 	}
 	
 	public Tile get(int x, int y){
+		x = x < 0 ? 0 : x >= width ? width - 1 : x;
+		y = y < 0 ? 0 : y >= height ? height - 1 : y;
 		return tiles.get(x).get(y);
 	}
 	
 	public void set(Tile tile, int x, int y){
 		tiles.get(x).set(y, tile);
+		tiles.get(x).get(y).setCoords(x, y);
 	}
 	
 	public int getWidth(){
@@ -56,7 +61,7 @@ public class TileMap {
 			for(int j = 0; j < list.size(); j++){
 				TileEnum type = list.get(j).type;
 				if(groundTiles.contains(type)){
-					list.get(j).draw(g, i, j);
+					list.get(j).draw(g);
 				}
 			}
 		}
@@ -66,7 +71,7 @@ public class TileMap {
 			for(int j = 0; j < list.size(); j++){
 				TileEnum type = list.get(j).type;
 				if(!groundTiles.contains(type)){
-					list.get(j).draw(g, i, j);
+					list.get(j).draw(g);
 				}
 			}
 		}
@@ -79,6 +84,19 @@ public class TileMap {
 				list.get(j).move(i * tileSize, j * tileSize);
 			}
 		}
+	}
+	
+	public void clear(){
+		for(int i = 0; i < width; i++){
+			ArrayList<Tile> list = tiles.get(i);
+			for(int j = 0; j < list.size(); j++){
+				list.get(j).clear();
+			}
+		}
+	}
+	
+	public TreeSet<Tile> getPossiblePath(int x, int y, int distance){
+		return tiles.get(x).get(y).getPossiblePath(this, distance);
 	}
 	
 	public int tileSize(){

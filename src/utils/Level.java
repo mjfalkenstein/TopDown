@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -508,8 +509,6 @@ public abstract class Level extends BasicGameState{
 		g.setBackground(Color.gray);
 
 		map.draw(g);
-		
-		if(inBattle){map.get(tileX, tileY).highlight(g, tileX, tileY);}
 
 		for(Region r : regions){
 			r.draw(g);
@@ -538,6 +537,18 @@ public abstract class Level extends BasicGameState{
 					Dialogue d = ((DialogueEvent)e).getDialogue();
 					d.draw(g);
 				}
+			}
+		}
+
+
+		if(inBattle){
+			map.get(tileX, tileY).highlight(g);
+			if(!currentCharacter.hasMoved()){
+				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.move);
+				for(Tile t : pathable){
+					t.highlight(g);
+				}
+				map.clear();
 			}
 		}
 

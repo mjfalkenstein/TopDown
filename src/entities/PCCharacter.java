@@ -27,6 +27,8 @@ public class PCCharacter extends Entity {
 	int speed = 1;
 	boolean active = false;
 	Image portrait;
+	boolean hasMoved = false;
+	public int move = 7;
 
 	int xCoord, yCoord;
 
@@ -298,5 +300,8 @@ public class PCCharacter extends Entity {
 	
 	public Image getPortrait(){
 		return portrait;
+	}
+	public boolean hasMoved(){
+		return hasMoved;
 	}
 }
