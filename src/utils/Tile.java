@@ -290,7 +290,7 @@ public class Tile implements Comparable{
 	
 	public void highlight(Graphics g){
 		Color c = Color.white;
-		c.a = 0.5f;
+		c.a = 0.25f;
 		g.setColor(c);
 		g.fill(new RoundedRectangle(x * tileSize, y * tileSize, tileSize, tileSize, 4));
 		c.a = 1.0f;
@@ -332,7 +332,8 @@ public class Tile implements Comparable{
 	@Override
 	public int compareTo(Object arg0) {
 		Tile tile = (Tile) arg0;
-		return x + y - tile.x + tile.y;
+		int out = x-tile.x + 10000*(y-tile.y);
+		return out;
 	}
 	
 	@Override

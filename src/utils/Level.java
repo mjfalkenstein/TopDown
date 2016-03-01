@@ -509,6 +509,18 @@ public abstract class Level extends BasicGameState{
 		g.setBackground(Color.gray);
 
 		map.draw(g);
+		
+		if(inBattle){
+			map.get(tileX, tileY).highlight(g);
+			if(!currentCharacter.hasMoved()){
+				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.move);
+				for(Tile t : pathable){
+					t.highlight(g);
+				}
+				map.clear();
+				pathable.clear();
+			}
+		}
 
 		for(Region r : regions){
 			r.draw(g);
@@ -537,18 +549,6 @@ public abstract class Level extends BasicGameState{
 					Dialogue d = ((DialogueEvent)e).getDialogue();
 					d.draw(g);
 				}
-			}
-		}
-
-
-		if(inBattle){
-			map.get(tileX, tileY).highlight(g);
-			if(!currentCharacter.hasMoved()){
-				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.move);
-				for(Tile t : pathable){
-					t.highlight(g);
-				}
-				map.clear();
 			}
 		}
 
