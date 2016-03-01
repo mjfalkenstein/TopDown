@@ -20,7 +20,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -151,6 +150,10 @@ public abstract class Level extends BasicGameState{
 			world.add(c);
 			c.setSprite("/Resources/testPlayerSprite.png", tileSize, tileSize);
 		}
+
+		try {
+			emptyCursor = new Cursor(1, 1, 0, 0, 1, BufferUtils.createIntBuffer(1), null);
+		} catch (LWJGLException e) {}
 	}
 
 	@Override
@@ -174,7 +177,6 @@ public abstract class Level extends BasicGameState{
 		pauseMenu.hide();
 		loadMenu.hide();
 		try {
-			emptyCursor = new Cursor(1, 1, 0, 0, 1, BufferUtils.createIntBuffer(1), null);
 			Mouse.setNativeCursor(emptyCursor);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -271,7 +273,6 @@ public abstract class Level extends BasicGameState{
 	protected void unpause(){
 		gc.resume();
 		try {
-			emptyCursor = new Cursor(1, 1, 0, 0, 1, BufferUtils.createIntBuffer(1), null);
 			Mouse.setNativeCursor(emptyCursor);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -493,19 +494,12 @@ public abstract class Level extends BasicGameState{
 		tileY = tileY > 0 ? tileY : 0;
 		try{
 			if(!inBattle){
-				emptyCursor = new Cursor(1, 1, 0, 0, 1, BufferUtils.createIntBuffer(1), null);
 				Mouse.setNativeCursor(emptyCursor);
 				g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
 				camera.move(currentCharacter.getX() - gc.getWidth()/2, currentCharacter.getY() - gc.getHeight()/2);
 				camera.enable();
 			}else{
 				Mouse.setNativeCursor(visibleCursor);
-//				Color c = Color.white;
-//				c.a = 0.5f;
-//				g.setColor(c);
-//				g.fill(new RoundedRectangle(tileX * tileSize, tileY * tileSize, tileSize, tileSize, 4));
-//				c.a = 1.0f;
-//				g.setColor(c);
 				g.translate(-camera.getX(), -camera.getY());
 				camera.disable();
 			}
