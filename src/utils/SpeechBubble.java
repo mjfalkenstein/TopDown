@@ -72,7 +72,6 @@ public class SpeechBubble {
 			g.setColor(bg.darker());
 			g.draw(body);
 			g.draw(hint);
-			bg.a = 0.9f;
 			g.setColor(bg);
 			g.fill(body);
 			g.fill(hint);
@@ -80,9 +79,7 @@ public class SpeechBubble {
 
 			int counter = 0;
 			for(String s : lines){	
-				//if((body.getY() + 10) + g.getFont().getLineHeight() * counter + g.getFont().getHeight(s) < body.getMaxY()){
-					g.drawString(s, body.getX() + 5, (body.getY() + 10) + g.getFont().getLineHeight() * counter);
-				//}
+				g.drawString(s, body.getX() + 5, (body.getY() + 10) + g.getFont().getLineHeight() * counter);
 				counter++;
 			}
 

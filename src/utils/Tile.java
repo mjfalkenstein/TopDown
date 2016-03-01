@@ -2,10 +2,12 @@ package utils;
 
 import java.util.Random;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.RoundedRectangle;
 
 public class Tile {
 	
@@ -275,7 +277,17 @@ public class Tile {
 	}
 	
 	public void draw(Graphics g, int i, int j){
+		g.setColor(Color.white);
 		image.draw(i * tileSize - (spriteSize - tileSize)/2, j * tileSize - (spriteSize - tileSize)/2);
+	}
+	
+	public void highlight(Graphics g, int i, int j){
+		Color c = Color.white;
+		c.a = 0.5f;
+		g.setColor(c);
+		g.fill(new RoundedRectangle(i * tileSize, j * tileSize, tileSize, tileSize, 4));
+		c.a = 1.0f;
+		g.setColor(c);
 	}
 	
 	public void setSprite(SpriteSheet newSprite){

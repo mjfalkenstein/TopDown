@@ -20,6 +20,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -304,7 +305,7 @@ public abstract class Level extends BasicGameState{
 	 * @param y - the y coordinate of the mouse
 	 */
 	protected void handlePauseMenuInputs(int button, int x, int y){
-		
+
 		x += camera.getX();
 		y += camera.getY();
 
@@ -385,12 +386,12 @@ public abstract class Level extends BasicGameState{
 	 * @param delta - time since the last frame
 	 */
 	protected void updateLevelEssentials(int delta, GameContainer gc){
-		
-		System.out.println(inBattle);
-		
-		int mouseX = gc.getInput().getMouseX() + camera.getX();
-		int mouseY = gc.getInput().getMouseY() + camera.getY();
-		
+
+		//System.out.println(inBattle);
+
+		mouseX = gc.getInput().getMouseX() + camera.getX();
+		mouseY = gc.getInput().getMouseY() + camera.getY();
+
 		if(!paused){
 			for(Entity e : world){
 				e.update(gc, delta, map);
@@ -484,18 +485,37 @@ public abstract class Level extends BasicGameState{
 	 * @param g - the Graphics context
 	 */
 	protected void drawLevelEssentials(Graphics g){
-		if(!inBattle){
-			g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
-			camera.move(currentCharacter.getX() - gc.getWidth()/2, currentCharacter.getY() - gc.getHeight()/2);
-			camera.enable();
-		}else{
-			g.translate(-camera.getX(), -camera.getY());
-			camera.disable();
-		}
+		int tileX = mouseX / tileSize;
+		int tileY = mouseY / tileSize;
+		tileX = tileX < map.getWidth() ? tileX : map.getWidth()-1;
+		tileY = tileY < map.getHeight() ? tileY : map.getHeight()-1;
+		tileX = tileX > 0 ? tileX : 0;
+		tileY = tileY > 0 ? tileY : 0;
+		try{
+			if(!inBattle){
+				emptyCursor = new Cursor(1, 1, 0, 0, 1, BufferUtils.createIntBuffer(1), null);
+				Mouse.setNativeCursor(emptyCursor);
+				g.translate(-(currentCharacter.getX() - gc.getWidth()/2), -(currentCharacter.getY() - gc.getHeight()/2));
+				camera.move(currentCharacter.getX() - gc.getWidth()/2, currentCharacter.getY() - gc.getHeight()/2);
+				camera.enable();
+			}else{
+				Mouse.setNativeCursor(visibleCursor);
+//				Color c = Color.white;
+//				c.a = 0.5f;
+//				g.setColor(c);
+//				g.fill(new RoundedRectangle(tileX * tileSize, tileY * tileSize, tileSize, tileSize, 4));
+//				c.a = 1.0f;
+//				g.setColor(c);
+				g.translate(-camera.getX(), -camera.getY());
+				camera.disable();
+			}
+		} catch(Exception e){}
 
 		g.setBackground(Color.gray);
 
 		map.draw(g);
+		
+		if(inBattle){map.get(tileX, tileY).highlight(g, tileX, tileY);}
 
 		for(Region r : regions){
 			r.draw(g);
@@ -516,7 +536,7 @@ public abstract class Level extends BasicGameState{
 		if(currentCharacter.getInventory() != null){
 			currentCharacter.getInventory().draw(g);
 		}
-		
+
 		for(Region r : regions){
 			Event e = r.getEvent();
 			if(e != null){
