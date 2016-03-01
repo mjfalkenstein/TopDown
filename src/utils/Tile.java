@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.RoundedRectangle;
 
-public class Tile implements Comparable{
+public class Tile implements Comparable<Tile>{
 	
 	SpriteSheet sprite;
 	int tileSize, spriteSize;
@@ -316,7 +316,6 @@ public class Tile implements Comparable{
 	
 	public TreeSet<Tile> getPossiblePath(TileMap map, int distance){
 		TreeSet<Tile> output = new TreeSet<Tile>();
-		
 		if(pathable && (shift < distance)){
 			shift = distance;
 			output.add(this);
@@ -325,19 +324,18 @@ public class Tile implements Comparable{
 			output.addAll(map.get(x, y + 1).getPossiblePath(map, distance - 1));
 			output.addAll(map.get(x, y - 1).getPossiblePath(map, distance - 1));
 		}
-		
 		return output;
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(Tile arg0) {
 		Tile tile = (Tile) arg0;
-		int out = x-tile.x + 10000*(y-tile.y);
+		int out = x - tile.x + 10000 * (y - tile.y);
 		return out;
 	}
 	
 	@Override
 	public boolean equals(Object arg0){
-		return compareTo(arg0) == 0;
+		return compareTo((Tile) arg0) == 0;
 	}
 }
