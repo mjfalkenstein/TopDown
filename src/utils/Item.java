@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Shape;
 
 import entities.Entity;
+import tiles.TileMap;
 
 public abstract class Item extends Entity{
 	

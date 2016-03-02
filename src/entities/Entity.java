@@ -5,8 +5,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
+import tiles.TileMap;
 import utils.Direction;
-import utils.TileMap;
 
 /**
  * This class represents anything that can act as a solid object on the screen

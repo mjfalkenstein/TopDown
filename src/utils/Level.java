@@ -2,6 +2,8 @@ package utils;
 
 import inGameMenus.InGameLoadMenu;
 import inGameMenus.InGameOptionsMenu;
+import tiles.Tile;
+import tiles.TileMap;
 
 import java.awt.Font;
 import java.io.File;

@@ -2,9 +2,9 @@ package events;
 
 import org.newdawn.slick.state.StateBasedGame;
 
+import tiles.TileMap;
 import utils.Camera;
 import utils.Region;
-import utils.TileMap;
 
 public class EnterBattleEvent extends Event{
 	boolean active;

@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import entities.Entity;
 import events.Event;
+import tiles.TileMap;
 
 public class Region extends Entity {
 	

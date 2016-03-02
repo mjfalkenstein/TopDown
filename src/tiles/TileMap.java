@@ -1,4 +1,4 @@
-package utils;
+package tiles;
 
 import java.util.ArrayList;
 import java.util.TreeSet;

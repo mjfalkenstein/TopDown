@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-import utils.TileMap;
+import tiles.TileMap;
 
 public class Door extends Entity {
 

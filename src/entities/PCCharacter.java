@@ -11,8 +11,8 @@ import org.newdawn.slick.SlickException;
 import utils.Direction;
 import utils.Inventory;
 import utils.Item;
-import utils.TileMap;
 import entities.Entity;
+import tiles.TileMap;
 
 /**
  * The player as it is represented on the screen

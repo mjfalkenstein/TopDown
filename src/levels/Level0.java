@@ -12,12 +12,12 @@ import driver.Driver;
 import utils.Dialogue;
 import utils.Level;
 import utils.Region;
-import utils.Tile;
-import utils.TileEnum;
 import entities.PCCharacter;
 import events.DialogueEvent;
 import events.EnterBattleEvent;
 import events.StateSwitchEvent;
+import tiles.Tile;
+import tiles.TileEnum;
 
 public class Level0 extends Level{
 

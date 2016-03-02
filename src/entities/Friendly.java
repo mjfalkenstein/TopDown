@@ -11,8 +11,8 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
 
 import utils.Dialogue;
-import utils.TileMap;
 import entities.Entity;
+import tiles.TileMap;
 
 /**
  * The player as it is represented on the screen

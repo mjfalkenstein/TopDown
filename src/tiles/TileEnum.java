@@ -1,4 +1,4 @@
-package utils;
+package tiles;
 
 public enum TileEnum {
 	
