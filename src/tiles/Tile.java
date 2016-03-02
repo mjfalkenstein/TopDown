@@ -329,19 +329,32 @@ public class Tile implements Comparable<Tile>{
 		return output;
 	}
 
-	public TreeSet<Tile> getPath(Graphics g, Tile tile, TreeSet<Tile> possible){
+	public TreeSet<Tile> getPath(TileMap map, Graphics g, Tile start, Tile destination, TreeSet<Tile> possible){
 		TreeSet<Tile> output = new TreeSet<Tile>();
-
-		Line line = new Line(x * tileSize + tileSize/2, y * tileSize + tileSize/2, tile.x * tileSize + tileSize/2, tile.y * tileSize + tileSize/2);
-
-		for(Tile t : possible){
-			if(t.pathable()){
-				Rectangle rectangle = new Rectangle(t.x * tileSize, t.y * tileSize, tileSize, tileSize);
-				if(rectangle.intersects(line)){
-					output.add(t);
-				}
+		output.add(start);
+		
+		Tile current = start;
+		
+		while(current.x != destination.x || current.y != destination.y){
+			if(current.x < destination.x){
+				current = map.get(current.x + 1, current.y);
+			}else if(current.x > destination.x){
+				current = map.get(current.x - 1, current.y);
+			}
+			if(possible.contains(current)){
+				output.add(current);
+			}
+			if(current.y < destination.y){
+				current = map.get(current.x, current.y + 1);
+			}else if(current.y > destination.y){
+				current = map.get(current.x, current.y - 1);
+			}
+			if(possible.contains(current)){
+				output.add(current);
 			}
 		}
+		
+		output.add(destination);
 
 		return output;
 	}
