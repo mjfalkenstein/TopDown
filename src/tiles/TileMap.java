@@ -95,6 +95,17 @@ public class TileMap {
 		}
 	}
 	
+	public ArrayList<Tile> getTiles(){
+		ArrayList<Tile> output = new ArrayList<Tile>();
+		for(int i = 0; i < width; i++){
+			ArrayList<Tile> list = tiles.get(i);
+			for(int j = 0; j < list.size(); j++){
+				output.add(list.get(j));
+			}
+		}
+		return output;
+	}
+	
 	public TreeSet<Tile> getPossiblePath(int x, int y, int distance){
 		return tiles.get(x).get(y).getPossiblePath(this, distance);
 	}
