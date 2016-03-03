@@ -8,8 +8,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
 
 public class Tile implements Comparable<Tile>{
@@ -329,11 +327,11 @@ public class Tile implements Comparable<Tile>{
 		return output;
 	}
 
-	public TreeSet<Tile> getPath(TileMap map, Graphics g, Tile start, Tile destination, TreeSet<Tile> possible){
+	public TreeSet<Tile> getPath(TileMap map, Tile destination, TreeSet<Tile> possible){
 		TreeSet<Tile> output = new TreeSet<Tile>();
-		output.add(start);
+		output.add(this);
 		
-		Tile current = start;
+		Tile current = this;
 		
 		while(current.x != destination.x || current.y != destination.y){
 			if(current.x < destination.x){
