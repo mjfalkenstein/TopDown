@@ -330,9 +330,9 @@ public class Tile implements Comparable<Tile>{
 	public TreeSet<Tile> getPath(TileMap map, Tile destination, TreeSet<Tile> possible){
 		TreeSet<Tile> output = new TreeSet<Tile>();
 		output.add(this);
-		
+
 		Tile current = this;
-		
+
 		while(current.x != destination.x || current.y != destination.y){
 			if(current.x < destination.x){
 				current = map.get(current.x + 1, current.y);
@@ -351,7 +351,6 @@ public class Tile implements Comparable<Tile>{
 				output.add(current);
 			}
 		}
-
 		return output;
 	}
 
@@ -370,11 +369,11 @@ public class Tile implements Comparable<Tile>{
 	public boolean equals(Object arg0){
 		return compareTo((Tile) arg0) == 0;
 	}
-	
+
 	public int getX(){
 		return x;
 	}
-	
+
 	public int getY(){
 		return y;
 	}

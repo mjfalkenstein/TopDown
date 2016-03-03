@@ -28,7 +28,7 @@ public class PCCharacter extends Entity {
 	boolean active = false;
 	Image portrait;
 	boolean hasMoved = false;
-	public int move = 7;
+	public int move = 11;
 
 	int xCoord, yCoord;
 
