@@ -87,6 +87,8 @@ public abstract class Level extends BasicGameState{
 	protected ArrayList<Dialogue> dialogues = new ArrayList<Dialogue>();
 
 	boolean inBattle = false;
+	
+	Path pathHighlight;
 
 	/**
 	 * Constructor
@@ -521,6 +523,8 @@ public abstract class Level extends BasicGameState{
 				for(Tile t : pathable){
 					t.highlight(g);
 				}
+				pathHighlight = new Path(path, spriteSize, tileSize);
+				pathHighlight.draw(g, map);
 				for(Tile t : path){
 					t.highlight(g);
 				}

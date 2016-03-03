@@ -372,4 +372,12 @@ public class Tile implements Comparable<Tile>{
 	public boolean equals(Object arg0){
 		return compareTo((Tile) arg0) == 0;
 	}
+	
+	public int getX(){
+		return x;
+	}
+	
+	public int getY(){
+		return y;
+	}
 }
