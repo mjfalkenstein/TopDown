@@ -524,7 +524,7 @@ public abstract class Level extends BasicGameState{
 					t.highlight(g);
 				}
 				pathHighlight = new Path(path, spriteSize, tileSize);
-				pathHighlight.draw(g, map);
+				pathHighlight.draw(g, playerTile, map);
 				for(Tile t : path){
 					t.highlight(g);
 				}

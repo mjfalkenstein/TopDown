@@ -351,8 +351,6 @@ public class Tile implements Comparable<Tile>{
 				output.add(current);
 			}
 		}
-		
-		output.add(destination);
 
 		return output;
 	}
