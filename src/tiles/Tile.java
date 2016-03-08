@@ -19,6 +19,7 @@ public class Tile implements Comparable<Tile>{
 	boolean pathable;
 	Image image;
 	int shift = 0;
+	double distance = 999999;
 
 	float movement, cover, protection, concealment, damage, flammability;
 
@@ -332,7 +333,6 @@ public class Tile implements Comparable<Tile>{
 
 		frontier.add(this);
         clear();
-        System.out.println(possible.size());
        
         for(Tile t : possible){
         	t.clear();
@@ -366,10 +366,8 @@ public class Tile implements Comparable<Tile>{
 		frontier.remove(chosen);
 		chosen.shift = distance;
 		output.add(chosen);
-		System.out.println("DEST " +destination.x+"  "+destination.y);
-		System.out.println("chosen.getDistance(destination) "+chosen.getDistance(destination));
 		if(chosen.getDistance(destination) == 0){
-			output.add(destination);
+			destination.shift = 99999999;
 			return output;
 		} else {
 			Tile lf = map.getWithNull(chosen.x - 1, chosen.y);
@@ -389,16 +387,15 @@ public class Tile implements Comparable<Tile>{
 			if(rt != null && rt.shift == 0 && possible.contains(rt)){
 				frontier.add(rt);
 			}
-			System.out.println("Output size: " + frontier.size());
 			output.addAll(getPathRecur(map, frontier, destination, distance+1, possible));
 		}
 		return output;
 	}
 
 	public double getDistance(Tile tile){
-		return 
-				Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
+		return Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
 	}
+	
 	public double hueristic(Tile tile){
 		return shift + Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
 	}
@@ -421,5 +418,17 @@ public class Tile implements Comparable<Tile>{
 
 	public int getY(){
 		return y;
+	}
+	
+	public void setDistance(double distance){
+		this.distance = distance;
+	}
+	
+	public double getDistance(){
+		return distance;
+	}
+	
+	public int getShift(){
+		return shift;
 	}
 }

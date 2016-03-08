@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,6 +13,8 @@ import utils.Direction;
 import utils.Inventory;
 import utils.Item;
 import entities.Entity;
+import tiles.Tile;
+import tiles.TileEnum;
 import tiles.TileMap;
 
 /**
@@ -29,6 +32,7 @@ public class PCCharacter extends Entity {
 	Image portrait;
 	boolean hasMoved = false;
 	public int move = 11;
+	ArrayList<Direction> path;
 
 	int xCoord, yCoord;
 
@@ -46,19 +50,27 @@ public class PCCharacter extends Entity {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		path = new ArrayList<Direction>();
 	}
 
 	@Override
 	public void update(GameContainer gc, int delta, TileMap map) {
 		if(active)
 			handleInputs(gc, map);
-		
+
 		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
 			x -= x % 2;
 			y -= y % 2;
 			speed = 2;
 		}else{
 			speed = 1;
+		}
+
+		if(path.size() != 0 && !isWalking){
+			direction = path.get(0);
+			spriteDirection = direction;
+			path.remove(0);
+			isWalking = true;
 		}
 
 		if(isWalking){
@@ -132,6 +144,67 @@ public class PCCharacter extends Entity {
 		}
 	}
 
+	public void setPath(TreeSet<Tile> tiles){
+		System.out.println("Setting path");
+		path.clear();
+		Tile tile = new Tile(TileEnum.BLANK, 0, 0);
+		tile.setCoords(xCoord, yCoord);
+		
+		if(!isWalking){
+
+			for(Tile t : tiles){
+				boolean left = false;
+				boolean right = false;
+				boolean top = false;
+				boolean bot = false;
+				boolean search = true;
+
+				Tile next = t;
+				
+				System.out.printf("t: (%d, %d) ", t.getX(), t.getY());
+
+				for(Tile t2 : tiles){
+					if(t.getDistance(tile) < t2.getDistance(tile) && t.getDistance(t2) == 1){
+						next = t2;
+						if(search && next.getX() < t.getX()){
+							left = true;
+							search = false;
+						}
+						if(search && next.getX() > t.getX()){
+							right = true;
+							search = false;
+						}
+						if(search && next.getY() < t.getY()){
+							top = true;
+							search = false;
+						}
+						if(search && next.getY() > t.getY()){
+							bot = true;
+							search = false;
+						}
+					}
+				}
+
+				if(left || right || top || bot){
+					if(left){
+						path.add(Direction.WEST);
+					}
+					if(right){
+						path.add(Direction.EAST);
+					}
+					if(top){
+						path.add(Direction.NORTH);
+					}
+					if(bot){
+						path.add(Direction.SOUTH);
+					}
+
+					//System.out.println("left: " + left + " right: " + right + " top: " + top + " bot: " + bot);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Called from update(), used to handle all inputs
 	 * 
@@ -140,7 +213,7 @@ public class PCCharacter extends Entity {
 	public void handleInputs(GameContainer gc, TileMap map){
 		Input input = gc.getInput();
 
-		if(!isWalking){
+		if(!isWalking && path.isEmpty()){
 			if(input.isKeyPressed(Input.KEY_W)){
 				spriteDirection = Direction.NORTH;
 			}
@@ -254,50 +327,50 @@ public class PCCharacter extends Entity {
 	public boolean has(Item item){
 		return inventory.contains(item);
 	}
-	
+
 	public boolean isWalking(){
 		return isWalking;
 	}
-	
+
 	public Direction getDirection(){
 		return direction;
 	}
-	
+
 	public void setWalking(boolean value){
 		isWalking = value;
 	}
-	
+
 	public int getXCoord(){
 		return xCoord;
 	}
-	
+
 	public int getYCoord(){
 		return yCoord;
 	}
-	
+
 	public void setDirection(Direction d){
 		direction = d;
 		spriteDirection = d;
 	}
-	
+
 	public void setXCoord(int x){
 		xCoord = x;
 		this.x = x * width;
 	}
-	
+
 	public void setYCoord(int y){
 		yCoord = y;
 		this.y = y * width;
 	}
-	
+
 	public boolean getActive(){
 		return active;
 	}
-	
+
 	public void setActive(boolean b){
 		active = b;
 	}
-	
+
 	public Image getPortrait(){
 		return portrait;
 	}

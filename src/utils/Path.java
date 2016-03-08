@@ -35,11 +35,17 @@ public class Path {
 
 		image = sprite.getSprite(0, 3);
 		
+		int i = 0;
+		
 		for(Tile t : path){
 			boolean left = false;
 			boolean right = false;
 			boolean top = false;
 			boolean bot = false;
+			
+			i++;
+			
+			
 			
 			for(Tile t2 : path){
 				if((t2.getX() - t.getX() == -1) && (t2.getY() - t.getY() == 0)){
@@ -105,8 +111,9 @@ public class Path {
 			}
 
 			g.setColor(Color.white);
-			//image.setAlpha(0.5f);
 			image.draw(t.getX() * tileSize - (spriteSize - tileSize)/2, t.getY() * tileSize - (spriteSize - tileSize)/2);
+			g.setColor(Color.black);
+			g.drawString(i + "", tileSize * (t.getX() ), tileSize * (t.getY()));
 		}
 	}
 }

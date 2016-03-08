@@ -85,7 +85,7 @@ public class Level0 extends Level{
 
 	@Override
 	public void mouseReleased(int button, int x, int y){
-		handlePauseMenuInputs(button, x, y);
+		handleMouseInput(button, x, y);
 	}
 
 	@Override

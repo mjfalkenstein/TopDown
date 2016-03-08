@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.TreeSet;
 
 import org.lwjgl.BufferUtils;
@@ -89,6 +90,13 @@ public abstract class Level extends BasicGameState{
 	boolean inBattle = false;
 	
 	Path pathHighlight;
+	TreeSet<Tile> path = new TreeSet<Tile>(new Comparator<Tile>(){
+
+		@Override
+		public int compare(Tile t0, Tile t1) {
+			return t0.getShift() - t1.getShift();
+		}
+	});
 
 	/**
 	 * Constructor
@@ -310,7 +318,7 @@ public abstract class Level extends BasicGameState{
 	 * @param x - the x coordinate of the mouse
 	 * @param y - the y coordinate of the mouse
 	 */
-	protected void handlePauseMenuInputs(int button, int x, int y){
+	protected void handleMouseInput(int button, int x, int y){
 
 		x += camera.getX();
 		y += camera.getY();
@@ -318,6 +326,9 @@ public abstract class Level extends BasicGameState{
 		String pauseMenuSelection = pauseMenu.handleMouseInput(x, y);
 
 		if(button == 0){
+			if(!paused && inBattle){
+				currentCharacter.setPath(path);
+			}
 			if(paused && 
 					!warning.isShowing() && 
 					!loadMenu.isShowing() && 
@@ -393,8 +404,6 @@ public abstract class Level extends BasicGameState{
 	 */
 	protected void updateLevelEssentials(int delta, GameContainer gc){
 
-		//System.out.println(inBattle);
-
 		mouseX = gc.getInput().getMouseX() + camera.getX();
 		mouseY = gc.getInput().getMouseY() + camera.getY();
 
@@ -443,9 +452,9 @@ public abstract class Level extends BasicGameState{
 			currentCharacter.getInventory().update(gc, delta);
 		}
 
-		if(	!warning.isShowing() && 
-				!loadMenu.isShowing() && 
-				!optionsMenu.isShowing()){
+		if(!warning.isShowing() && 
+		   !loadMenu.isShowing() && 
+		   !optionsMenu.isShowing()){
 
 			pauseMenu.hover(mouseX, mouseY);
 		}
@@ -520,20 +529,19 @@ public abstract class Level extends BasicGameState{
 				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.move);
 				Tile playerTile = map.get(currentCharacter.getXCoord(), currentCharacter.getYCoord());
 				TreeSet<Tile> tryPath = playerTile.getPath(map, map.get(tileX, tileY), pathable);
-				TreeSet<Tile> path = new TreeSet<Tile>();
-				path = tryPath == null ? path : tryPath;
+				//path = tryPath == null ? path : tryPath;
+				if(tryPath != null) path.addAll(tryPath);
 				for(Tile t : pathable){
 					t.highlight(g);
 				}
 				pathHighlight = new Path(path, spriteSize, tileSize);
-				pathHighlight.draw(g, playerTile, map);
 				for(Tile t : path){
-					System.out.printf("Path tile: X: %d, Y: %d\n", t.getX(), t.getY());
-					t.highlight(g);
+					t.setDistance(t.getDistance(playerTile));
 				}
-				System.out.println("========================");
+				pathHighlight.draw(g, playerTile, map);
 				map.clear();
 				pathable.clear();
+				path.clear();
 			}
 		}
 
