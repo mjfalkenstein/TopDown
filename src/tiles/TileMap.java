@@ -42,6 +42,13 @@ public class TileMap {
 		return tiles.get(x).get(y);
 	}
 	
+	public Tile getWithNull(int x, int y){
+		if(x < 0 || x >= width || y < 0 || y >= height){
+			return null;
+		}
+		return tiles.get(x).get(y);
+	}
+	
 	public void set(Tile tile, int x, int y){
 		tiles.get(x).set(y, tile);
 		tiles.get(x).get(y).setCoords(x, y);

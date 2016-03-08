@@ -519,15 +519,19 @@ public abstract class Level extends BasicGameState{
 			if(!currentCharacter.hasMoved()){
 				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.move);
 				Tile playerTile = map.get(currentCharacter.getXCoord(), currentCharacter.getYCoord());
-				TreeSet<Tile> path = playerTile.getPath(map, map.get(tileX, tileY), pathable);
+				TreeSet<Tile> tryPath = playerTile.getPath(map, map.get(tileX, tileY), pathable);
+				TreeSet<Tile> path = new TreeSet<Tile>();
+				path = tryPath == null ? path : tryPath;
 				for(Tile t : pathable){
 					t.highlight(g);
 				}
 				pathHighlight = new Path(path, spriteSize, tileSize);
 				pathHighlight.draw(g, playerTile, map);
 				for(Tile t : path){
+					System.out.printf("Path tile: X: %d, Y: %d\n", t.getX(), t.getY());
 					t.highlight(g);
 				}
+				System.out.println("========================");
 				map.clear();
 				pathable.clear();
 			}

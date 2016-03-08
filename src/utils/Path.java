@@ -34,7 +34,7 @@ public class Path {
 	public void draw(Graphics g, Tile playerTile, TileMap map){
 
 		image = sprite.getSprite(0, 3);
-
+		
 		for(Tile t : path){
 			boolean left = false;
 			boolean right = false;

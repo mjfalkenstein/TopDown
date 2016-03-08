@@ -328,34 +328,79 @@ public class Tile implements Comparable<Tile>{
 	}
 
 	public TreeSet<Tile> getPath(TileMap map, Tile destination, TreeSet<Tile> possible){
+		TreeSet<Tile> frontier = new TreeSet<Tile>();
+
+		frontier.add(this);
+        clear();
+        System.out.println(possible.size());
+       
+        for(Tile t : possible){
+        	t.clear();
+        }
+        
+        return getPathRecur(map, frontier, destination, 01, possible);
+    }
+	
+	static private TreeSet<Tile> getPathRecur(TileMap map, TreeSet<Tile> frontier, Tile destination, int distance, TreeSet<Tile> possible){
+		
+		if(!possible.contains(destination)){
+			return null;
+		}
+		
 		TreeSet<Tile> output = new TreeSet<Tile>();
-		output.add(this);
-
-		Tile current = this;
-
-		while(current.x != destination.x || current.y != destination.y){
-			if(current.x < destination.x){
-				current = map.get(current.x + 1, current.y);
-			}else if(current.x > destination.x){
-				current = map.get(current.x - 1, current.y);
+		
+		if(frontier.size() == 0){
+			return output;
+		}
+		
+		Tile chosen = (Tile) frontier.toArray()[0];
+		double minDistance = chosen.hueristic(destination);
+		
+		for(Tile t : frontier){
+			if(t.hueristic(destination) < minDistance){
+				minDistance = t.hueristic(destination);
+				chosen = t;
 			}
-			if(possible.contains(current)){
-				output.add(current);
+		}
+		
+		frontier.remove(chosen);
+		chosen.shift = distance;
+		output.add(chosen);
+		System.out.println("DEST " +destination.x+"  "+destination.y);
+		System.out.println("chosen.getDistance(destination) "+chosen.getDistance(destination));
+		if(chosen.getDistance(destination) == 0){
+			output.add(destination);
+			return output;
+		} else {
+			Tile lf = map.getWithNull(chosen.x - 1, chosen.y);
+			Tile rt = map.getWithNull(chosen.x + 1, chosen.y);
+			Tile up = map.getWithNull(chosen.x, chosen.y - 1);
+			Tile dn = map.getWithNull(chosen.x, chosen.y + 1);
+			
+			if(up != null && up.shift == 0 && possible.contains(up)){
+				frontier.add(up);
 			}
-			if(current.y < destination.y){
-				current = map.get(current.x, current.y + 1);
-			}else if(current.y > destination.y){
-				current = map.get(current.x, current.y - 1);
+			if(dn != null && dn.shift == 0 && possible.contains(dn)){
+				frontier.add(dn);
 			}
-			if(possible.contains(current)){
-				output.add(current);
+			if(lf != null && lf.shift == 0 && possible.contains(lf)){
+				frontier.add(lf);
 			}
+			if(rt != null && rt.shift == 0 && possible.contains(rt)){
+				frontier.add(rt);
+			}
+			System.out.println("Output size: " + frontier.size());
+			output.addAll(getPathRecur(map, frontier, destination, distance+1, possible));
 		}
 		return output;
 	}
 
 	public double getDistance(Tile tile){
-		return Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
+		return 
+				Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
+	}
+	public double hueristic(Tile tile){
+		return shift + Math.sqrt((tile.x - x) * (tile.x - x) + (tile.y - y) * (tile.y - y));
 	}
 
 	@Override
