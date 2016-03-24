@@ -45,8 +45,6 @@ public class Path {
 			
 			i++;
 			
-			
-			
 			for(Tile t2 : path){
 				if((t2.getX() - t.getX() == -1) && (t2.getY() - t.getY() == 0)){
 					left = true;
@@ -112,8 +110,6 @@ public class Path {
 
 			g.setColor(Color.white);
 			image.draw(t.getX() * tileSize - (spriteSize - tileSize)/2, t.getY() * tileSize - (spriteSize - tileSize)/2);
-			g.setColor(Color.black);
-			g.drawString(i + "", tileSize * (t.getX() ), tileSize * (t.getY()));
 		}
 	}
 }

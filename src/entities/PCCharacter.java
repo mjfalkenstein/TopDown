@@ -145,7 +145,7 @@ public class PCCharacter extends Entity {
 	}
 
 	public void setPath(TreeSet<Tile> tiles){
-		System.out.println("Setting path");
+		System.out.println("Setting path with length " + tiles.size());
 		path.clear();
 		Tile tile = new Tile(TileEnum.BLANK, 0, 0);
 		tile.setCoords(xCoord, yCoord);
@@ -198,8 +198,6 @@ public class PCCharacter extends Entity {
 					if(bot){
 						path.add(Direction.SOUTH);
 					}
-
-					//System.out.println("left: " + left + " right: " + right + " top: " + top + " bot: " + bot);
 				}
 			}
 		}
