@@ -55,8 +55,6 @@ public class PCCharacter extends Entity {
 
 	@Override
 	public void update(GameContainer gc, int delta, TileMap map) {
-		if(active)
-			handleInputs(gc, map);
 
 		if(gc.getInput().isKeyDown(Input.KEY_LSHIFT)){
 			x -= x % 2;
@@ -145,7 +143,6 @@ public class PCCharacter extends Entity {
 	}
 
 	public void setPath(TreeSet<Tile> tiles){
-		System.out.println("Setting path with length " + tiles.size());
 		path.clear();
 		Tile tile = new Tile(TileEnum.BLANK, 0, 0);
 		tile.setCoords(xCoord, yCoord);
@@ -160,8 +157,6 @@ public class PCCharacter extends Entity {
 				boolean search = true;
 
 				Tile next = t;
-				
-				System.out.printf("t: (%d, %d) ", t.getX(), t.getY());
 
 				for(Tile t2 : tiles){
 					if(t.getDistance(tile) < t2.getDistance(tile) && t.getDistance(t2) == 1){
@@ -210,6 +205,8 @@ public class PCCharacter extends Entity {
 	 */
 	public void handleInputs(GameContainer gc, TileMap map){
 		Input input = gc.getInput();
+		
+		path.clear();
 
 		if(!isWalking && path.isEmpty()){
 			if(input.isKeyPressed(Input.KEY_W)){

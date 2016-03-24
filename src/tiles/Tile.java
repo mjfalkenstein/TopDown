@@ -329,19 +329,19 @@ public class Tile implements Comparable<Tile>{
 	}
 
 	public TreeSet<Tile> getPath(TileMap map, Tile destination, TreeSet<Tile> possible){
-		TreeSet<Tile> frontier = new TreeSet<Tile>();
+		TreeSet<Tile> path = new TreeSet<Tile>();
 
-		frontier.add(this);
+		path.add(this);
         clear();
        
         for(Tile t : possible){
         	t.clear();
         }
         
-        return getPathRecur(map, frontier, destination, 01, possible);
+        return getPathRecur(map, path, destination, 01, possible);
     }
 	
-	static private TreeSet<Tile> getPathRecur(TileMap map, TreeSet<Tile> frontier, Tile destination, int distance, TreeSet<Tile> possible){
+	static private TreeSet<Tile> getPathRecur(TileMap map, TreeSet<Tile> path, Tile destination, int distance, TreeSet<Tile> possible){
 		
 		if(!possible.contains(destination)){
 			return null;
@@ -349,21 +349,21 @@ public class Tile implements Comparable<Tile>{
 		
 		TreeSet<Tile> output = new TreeSet<Tile>();
 		
-		if(frontier.size() == 0){
+		if(path.size() == 0){
 			return output;
 		}
 		
-		Tile chosen = (Tile) frontier.toArray()[0];
+		Tile chosen = (Tile) path.toArray()[0];
 		double minDistance = chosen.hueristic(destination);
 		
-		for(Tile t : frontier){
+		for(Tile t : path){
 			if(t.hueristic(destination) < minDistance){
 				minDistance = t.hueristic(destination);
 				chosen = t;
 			}
 		}
 		
-		frontier.remove(chosen);
+		path.remove(chosen);
 		chosen.shift = distance;
 		output.add(chosen);
 		if(chosen.getDistance(destination) == 0){
@@ -376,18 +376,18 @@ public class Tile implements Comparable<Tile>{
 			Tile dn = map.getWithNull(chosen.x, chosen.y + 1);
 			
 			if(up != null && up.shift == 0 && possible.contains(up)){
-				frontier.add(up);
+				path.add(up);
 			}
 			if(dn != null && dn.shift == 0 && possible.contains(dn)){
-				frontier.add(dn);
+				path.add(dn);
 			}
 			if(lf != null && lf.shift == 0 && possible.contains(lf)){
-				frontier.add(lf);
+				path.add(lf);
 			}
 			if(rt != null && rt.shift == 0 && possible.contains(rt)){
-				frontier.add(rt);
+				path.add(rt);
 			}
-			output.addAll(getPathRecur(map, frontier, destination, distance+1, possible));
+			output.addAll(getPathRecur(map, path, destination, distance+1, possible));
 		}
 		return output;
 	}

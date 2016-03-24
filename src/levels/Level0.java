@@ -39,7 +39,7 @@ public class Level0 extends Level{
 		
 		testDialogueRegion = new Region(1, 1, 2, 3, tileSize, Color.green, testDialogueEvent);
 		testEventRegion = new Region(2, 7, 1, 1, tileSize, Color.blue, testStateSwitchEvent);
-		testBattleRegion = new Region(2, 10, 3, 3, tileSize, Color.red, testBattleEvent);
+		testBattleRegion = new Region(2, 10, 7, 3, tileSize, Color.red, testBattleEvent);
 	}
 
 	@Override

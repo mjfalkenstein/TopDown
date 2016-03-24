@@ -429,11 +429,6 @@ public abstract class Level extends BasicGameState{
 		currentCharacter = characters.get(currentCharacterIndex);
 		currentCharacter.setActive(true);
 
-		//if the player leaves the level bounds, it dies
-		if(currentCharacter.getY() > levelHeight || currentCharacter.getX() > levelWidth){
-			currentCharacter.kill();
-		}
-
 		//if player is dead, reload the most recent save
 		if(currentCharacter.isDead()){
 
@@ -448,10 +443,7 @@ public abstract class Level extends BasicGameState{
 			}
 			currentCharacter.revive();
 		}
-		if(!paused){
-			currentCharacter.getInventory().update(gc, delta);
-		}
-
+		
 		if(!warning.isShowing() && 
 		   !loadMenu.isShowing() && 
 		   !optionsMenu.isShowing()){
@@ -487,8 +479,10 @@ public abstract class Level extends BasicGameState{
 				inBattle = r.contains(currentCharacter);
 			}
 		}
-
-		currentCharacter.getInventory().move(camera.getX(), camera.getY());
+		
+		if(!inBattle){
+			currentCharacter.handleInputs(gc, map);
+		}
 
 		loadMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
 		optionsMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
