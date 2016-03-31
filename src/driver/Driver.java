@@ -18,6 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import entities.PCCharacter;
 import utils.SaverLoader;
+import utils.Stats;
 
 /**
  * The main driver class, initializes all the game states and handles the initial display mode
@@ -75,8 +76,12 @@ public class Driver extends StateBasedGame{
 
 		int tileSize = 50;
 		int spriteSize = 60;
-		PCCharacter testCharacter1 = new PCCharacter(tileSize, "Resources/portraitTemplate.png");
-		PCCharacter testCharacter2 = new PCCharacter(tileSize, "Resources/portraitTemplate.png");
+		
+		Stats stats1 = new Stats(10, 2, 4, 5, 2, 3, 7, 3);
+		Stats stats2 = new Stats(13, 6, 3, 1, 7, 4, 3, 8);
+		
+		PCCharacter testCharacter1 = new PCCharacter(tileSize, "Resources/portraitTemplate.png", stats1);
+		PCCharacter testCharacter2 = new PCCharacter(tileSize, "Resources/portraitTemplate.png", stats2);
 		
 		ArrayList<PCCharacter> testCharacters = new ArrayList<PCCharacter>();
 		

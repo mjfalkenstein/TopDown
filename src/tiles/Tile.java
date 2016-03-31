@@ -366,9 +366,13 @@ public class Tile implements Comparable<Tile>{
 		path.remove(chosen);
 		chosen.shift = distance;
 		output.add(chosen);
+		
+		System.out.println("path size: " + path.size() );
+		
 		if(chosen.getDistance(destination) == 0){
 			destination.shift = 99999999;
 			return output;
+			
 		} else {
 			Tile lf = map.getWithNull(chosen.x - 1, chosen.y);
 			Tile rt = map.getWithNull(chosen.x + 1, chosen.y);
@@ -387,8 +391,10 @@ public class Tile implements Comparable<Tile>{
 			if(rt != null && rt.shift == 0 && possible.contains(rt)){
 				path.add(rt);
 			}
+			
 			output.addAll(getPathRecur(map, path, destination, distance+1, possible));
 		}
+		
 		return output;
 	}
 
