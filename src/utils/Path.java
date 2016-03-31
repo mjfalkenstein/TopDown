@@ -110,8 +110,8 @@ public class Path {
 
 			g.setColor(Color.white);
 			image.draw(t.getX() * tileSize - (spriteSize - tileSize)/2, t.getY() * tileSize - (spriteSize - tileSize)/2);
-			g.setColor(Color.black);
-			g.drawString(i + "", tileSize * (t.getX() ), tileSize * (t.getY()));
+//			g.setColor(Color.black);
+//			g.drawString(i + "", tileSize * (t.getX() ), tileSize * (t.getY()));
 		}
 	}
 }

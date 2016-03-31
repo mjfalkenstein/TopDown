@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 import java.util.TreeSet;
 
 import org.lwjgl.BufferUtils;
@@ -88,7 +90,12 @@ public abstract class Level extends BasicGameState{
 	protected ArrayList<Dialogue> dialogues = new ArrayList<Dialogue>();
 
 	boolean inBattle = false;
-	
+
+	Region currentBattleRegion;
+
+	boolean teleportCharacters = true;
+
+
 	Path pathHighlight;
 	TreeSet<Tile> path = new TreeSet<Tile>(new Comparator<Tile>(){
 
@@ -118,7 +125,6 @@ public abstract class Level extends BasicGameState{
 		currentCharacter = characters.get(currentCharacterIndex);
 		currentCharacter.setActive(true);
 
-		//loading the font
 		try{
 			InputStream is = ResourceLoader.getResourceAsStream("Resources/HappyKiller.ttf");
 			Font awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -443,10 +449,10 @@ public abstract class Level extends BasicGameState{
 			}
 			currentCharacter.revive();
 		}
-		
+
 		if(!warning.isShowing() && 
-		   !loadMenu.isShowing() && 
-		   !optionsMenu.isShowing()){
+				!loadMenu.isShowing() && 
+				!optionsMenu.isShowing()){
 
 			pauseMenu.hover(mouseX, mouseY);
 		}
@@ -472,6 +478,7 @@ public abstract class Level extends BasicGameState{
 				}
 				if(e.getType() == EventType.BATTLE){
 					EnterBattleEvent d = (EnterBattleEvent)e;
+					currentBattleRegion = r;
 					d.act(sbg, camera);
 				}
 			}
@@ -479,9 +486,36 @@ public abstract class Level extends BasicGameState{
 				inBattle = r.contains(currentCharacter);
 			}
 		}
-		
+
 		if(!inBattle){
 			currentCharacter.handleInputs(gc, map);
+			teleportCharacters = true;
+		}else{
+
+			Collections.sort(characters, new CharacterComparator());
+
+			if(teleportCharacters){
+				teleportCharacters = false;
+
+				TreeSet<Tile> moveCharacters = new TreeSet<Tile>();
+
+				for(Tile t : map.getTiles()){
+					if(t.getDistance(map.get(currentCharacter.getXCoord(), currentCharacter.getYCoord())) <= 3.0){
+						if(currentBattleRegion.contains(t.getX() * tileSize, t.getY() * tileSize)){
+							moveCharacters.add(t);
+						}
+					}
+				}
+				for(PCCharacter c : characters){
+					if(c != currentCharacter){
+						Random r = new Random();
+						Tile t = (Tile)moveCharacters.toArray()[r.nextInt(moveCharacters.size())];
+						c.move((t.getX() - 1) * tileSize, (t.getY() - 1) * tileSize);
+						c.setXCoord(t.getX());
+						c.setYCoord(t.getY());
+					}
+				}
+			}
 		}
 
 		loadMenu.update(camera.getX(), camera.getY(), mouseX, mouseY, gc);
@@ -516,7 +550,7 @@ public abstract class Level extends BasicGameState{
 		g.setBackground(Color.gray);
 
 		map.draw(g);
-		
+
 		if(inBattle){
 			map.get(tileX, tileY).highlight(g);
 			if(!currentCharacter.hasMoved()){

@@ -367,8 +367,6 @@ public class Tile implements Comparable<Tile>{
 		chosen.shift = distance;
 		output.add(chosen);
 		
-		System.out.println("path size: " + path.size() );
-		
 		if(chosen.getDistance(destination) == 0){
 			destination.shift = 99999999;
 			return output;

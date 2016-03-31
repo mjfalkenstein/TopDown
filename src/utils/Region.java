@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import entities.Entity;
 import events.Event;
+import tiles.Tile;
 import tiles.TileMap;
 
 public class Region extends Entity {
@@ -64,6 +65,10 @@ public class Region extends Entity {
 	
 	public boolean contains(Entity e){
 		return highlight.contains(e.getX() + tileSize/2, e.getY() + tileSize/2);
+	}
+	
+	public boolean contains(float x, float y){
+		return highlight.contains(x, y);
 	}
 
 	@Override

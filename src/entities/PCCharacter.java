@@ -21,7 +21,7 @@ import tiles.TileMap;
 /**
  * The player as it is represented on the screen
  */
-public class PCCharacter extends Entity {
+public class PCCharacter extends Entity{
 
 	Inventory inventory;
 	boolean dead = false;
@@ -403,5 +403,9 @@ public class PCCharacter extends Entity {
 	
 	public int getMoves(){
 		return moves;
+	}
+	
+	public Stats getStats(){
+		return stats;
 	}
 }
