@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import utils.Direction;
 import utils.Inventory;
 import utils.Item;
+import utils.Stats;
 import entities.Entity;
 import tiles.Tile;
 import tiles.TileEnum;
@@ -31,8 +32,12 @@ public class PCCharacter extends Entity {
 	boolean active = false;
 	Image portrait;
 	boolean hasMoved = false;
-	public int move = 11;
+	public int maxTiles = 5;
+	public static final int MAX_MOVES = 2;
+	private int moves = 0;
 	ArrayList<Direction> path;
+	Stats stats;
+	int currentHealth;
 
 	int xCoord, yCoord;
 
@@ -51,6 +56,29 @@ public class PCCharacter extends Entity {
 			e.printStackTrace();
 		}
 		path = new ArrayList<Direction>();
+		
+		stats = new Stats(1, 0, 0, 0, 0, 0, 0, 0);
+		currentHealth = stats.maxHealth;
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param boundingBox - a Rectangle representing the borders of the Platform
+	 * @param velocity - the initial velocity
+	 */
+	public PCCharacter(float size, String portraitPath, Stats stats) {
+		super(0, 0, size, size);
+		inventory = new Inventory(new ArrayList<Item>());
+		try {
+			portrait = new Image(portraitPath);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		path = new ArrayList<Direction>();
+		
+		this.stats = stats;
+		currentHealth = stats.maxHealth;
 	}
 
 	@Override
@@ -371,5 +399,9 @@ public class PCCharacter extends Entity {
 	}
 	public boolean hasMoved(){
 		return hasMoved;
+	}
+	
+	public int getMoves(){
+		return moves;
 	}
 }
