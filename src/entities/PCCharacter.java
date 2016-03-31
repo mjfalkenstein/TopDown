@@ -23,7 +23,7 @@ import tiles.TileMap;
  */
 public class PCCharacter extends Entity{
 
-	Inventory inventory;
+	public Inventory inventory;
 	boolean dead = false;
 	boolean isWalking = false;
 	Image image;
@@ -165,9 +165,6 @@ public class PCCharacter extends Entity{
 	@Override
 	public void reset(){
 		move(startingX, startingY);
-		if(inventory != null){
-			inventory.reset();
-		}
 	}
 
 	public void setPath(TreeSet<Tile> tiles){

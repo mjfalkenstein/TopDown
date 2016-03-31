@@ -94,7 +94,7 @@ public abstract class Level extends BasicGameState{
 	Region currentBattleRegion;
 
 	boolean teleportCharacters = true;
-
+	boolean drawCharacterInventory = false;
 
 	Path pathHighlight;
 	TreeSet<Tile> path = new TreeSet<Tile>(new Comparator<Tile>(){
@@ -491,7 +491,6 @@ public abstract class Level extends BasicGameState{
 			currentCharacter.handleInputs(gc, map);
 			teleportCharacters = true;
 		}else{
-
 			Collections.sort(characters, new CharacterComparator());
 
 			if(teleportCharacters){
@@ -572,6 +571,10 @@ public abstract class Level extends BasicGameState{
 				map.clear();
 				pathable.clear();
 			}
+			
+			if(drawCharacterInventory){
+				currentCharacter.getInventory().draw(g);
+			}
 		}
 
 		for(Region r : regions){
@@ -590,10 +593,6 @@ public abstract class Level extends BasicGameState{
 			c.draw(g);
 		}
 
-		if(currentCharacter.getInventory() != null){
-			currentCharacter.getInventory().draw(g);
-		}
-
 		for(Region r : regions){
 			Event e = r.getEvent();
 			if(e != null){
@@ -610,6 +609,8 @@ public abstract class Level extends BasicGameState{
 		warning.move(gc.getWidth()/2 - warning.getWidth()/2, gc.getHeight()/2 - warning.getHeight()/2);
 		b1.hover(mouseX, mouseY);
 		b2.hover(mouseX, mouseY);
+		
+		currentCharacter.inventory.move(camera.getX(), camera.getY());
 
 		int counter = 0;
 		for(PCCharacter c : characters){
@@ -638,9 +639,11 @@ public abstract class Level extends BasicGameState{
 			if(!paused){
 				pause();
 				pauseMenu.show();
+				drawCharacterInventory = true;
 			}else{
 				unpause();
 				pauseMenu.hide();
+				drawCharacterInventory = false;
 			}
 		}
 		if(key == Input.KEY_SPACE){
