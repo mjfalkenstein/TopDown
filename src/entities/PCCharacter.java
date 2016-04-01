@@ -13,7 +13,6 @@ import utils.Direction;
 import utils.Inventory;
 import utils.Item;
 import utils.Stats;
-import entities.Entity;
 import tiles.Tile;
 import tiles.TileEnum;
 import tiles.TileMap;
@@ -21,23 +20,7 @@ import tiles.TileMap;
 /**
  * The player as it is represented on the screen
  */
-public class PCCharacter extends Entity{
-
-	public Inventory inventory;
-	boolean dead = false;
-	boolean isWalking = false;
-	Image image;
-	Direction spriteDirection = Direction.NORTH;
-	int speed = 1;
-	boolean active = false;
-	Image portrait;
-	boolean hasMoved = false;
-	public int maxTiles = 5;
-	public static final int MAX_MOVES = 2;
-	private int moves = 0;
-	ArrayList<Direction> path;
-	Stats stats;
-	int currentHealth;
+public class PCCharacter extends entities.Character{
 
 	int xCoord, yCoord;
 
@@ -49,7 +32,7 @@ public class PCCharacter extends Entity{
 	 */
 	public PCCharacter(float size, String portraitPath) {
 		super(0, 0, size, size);
-		inventory = new Inventory(new ArrayList<Item>());
+		setInventory(new Inventory(new ArrayList<Item>()));
 		try {
 			portrait = new Image(portraitPath);
 		} catch (SlickException e) {
@@ -69,7 +52,7 @@ public class PCCharacter extends Entity{
 	 */
 	public PCCharacter(float size, String portraitPath, Stats stats) {
 		super(0, 0, size, size);
-		inventory = new Inventory(new ArrayList<Item>());
+		setInventory(new Inventory(new ArrayList<Item>()));
 		try {
 			portrait = new Image(portraitPath);
 		} catch (SlickException e) {
@@ -330,14 +313,14 @@ public class PCCharacter extends Entity{
 	}
 
 	public void addItem(Item item) {
-		if(inventory == null){
-			inventory = new Inventory(new ArrayList<Item>());
+		if(getInventory() == null){
+			setInventory(new Inventory(new ArrayList<Item>()));
 		}
-		inventory.addItem(item);
+		getInventory().addItem(item);
 	}
 
 	public void removeItem(Item item){
-		inventory.removeItem(item);
+		getInventory().removeItem(item);
 	}
 
 	public Inventory getInventory(){
@@ -345,7 +328,7 @@ public class PCCharacter extends Entity{
 	}
 
 	public boolean has(Item item){
-		return inventory.contains(item);
+		return getInventory().contains(item);
 	}
 
 	public boolean isWalking(){

@@ -11,7 +11,8 @@ public class Weapon extends Item{
 
 	WeaponEnum type;
 	
-	int damage;
+	public int damage;
+	public int hitPenalty;
 	
 	public Weapon(WeaponEnum type){
 		this.type = type;
@@ -56,6 +57,7 @@ public class Weapon extends Item{
 		maxDurability = 40;
 		currentDurability = maxDurability;
 		damage = 6;
+		hitPenalty = 0;
 		
 		try {
 			sprite = new SpriteSheet("Resources/sword.png" , 10, 10);

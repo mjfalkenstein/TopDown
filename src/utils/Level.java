@@ -553,7 +553,7 @@ public abstract class Level extends BasicGameState{
 		if(inBattle){
 			map.get(tileX, tileY).highlight(g);
 			if(!currentCharacter.hasMoved()){
-				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.maxTiles);
+				TreeSet<Tile> pathable = map.getPossiblePath(currentCharacter.getXCoord(), currentCharacter.getYCoord(), currentCharacter.getMaxTiles());
 				Tile playerTile = map.get(currentCharacter.getXCoord(), currentCharacter.getYCoord());
 				TreeSet<Tile> tryPath = playerTile.getPath(map, map.get(tileX, tileY), pathable);
 				if(tryPath != null){
@@ -610,7 +610,7 @@ public abstract class Level extends BasicGameState{
 		b1.hover(mouseX, mouseY);
 		b2.hover(mouseX, mouseY);
 		
-		currentCharacter.inventory.move(camera.getX(), camera.getY());
+		currentCharacter.getInventory().move(camera.getX(), camera.getY());
 
 		int counter = 0;
 		for(PCCharacter c : characters){

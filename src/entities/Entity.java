@@ -15,8 +15,8 @@ public abstract class Entity {
 	
 	protected float x, y, width, height, startingX, startingY, startingMaxX, startingMaxY;
 	protected SpriteSheet sprite;
-	Direction direction;
-	boolean visible = true;
+	protected Direction direction;
+	protected boolean visible = true;
 	
 	/**
 	 * Constructor
